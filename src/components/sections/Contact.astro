@@ -1,0 +1,89 @@
+---
+// Contact.astro
+---
+<section class="contact-section fade px-[20px] py-[50px] md:px-[60px] md:py-[100px] max-w-[1400px] mx-auto text-center" id="contact">
+    <div class="section-header">
+        <h2 data-es="Ponte en Contacto" data-en="Get in Touch">Ponte en Contacto</h2>
+        <p data-es="Listo para tu próximo proyecto o colaboración" data-en="Ready for your next project or collaboration">Listo para tu próximo proyecto o colaboración</p>
+    </div>
+    <div class="contact-content mt-[60px]">
+        <div class="contact-layout grid grid-cols-1 lg:grid-cols-2 gap-[40px] md:gap-[60px] items-start text-left">
+
+            <!-- Contact Info -->
+            <div class="contact-info">
+                <p class="contact-intro text-[1.05rem] mb-[36px] leading-[1.9] text-slate-400" data-es="¿Tienes una idea interesante? Me encantaría escucharla y ayudarte a convertirla en realidad. Escríbeme y hablamos." data-en="Have an interesting idea? I'd love to hear it and help you turn it into reality. Write to me and let's talk.">
+                    ¿Tienes una idea interesante? Me encantaría escucharla y ayudarte a convertirla en realidad. Escríbeme y hablamos.
+                </p>
+                <div class="contact-links-stack flex flex-col gap-[14px]">
+                    <a href="mailto:dmartinezperandres@gmail.com" class="contact-link-card flex items-center gap-[18px] p-[16px_14px] md:p-[18px_22px] text-left bg-bg-light border border-slate-400/10 rounded-[16px] no-underline transition-all duration-300 group hover:border-accent-cyan hover:bg-accent-cyan/5 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(6,182,212,0.1)]">
+                        <div class="contact-icon w-[45px] h-[45px] rounded-[12px] bg-slate-400/5 text-accent-cyan text-[1.2rem] flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-link-info flex flex-col gap-[4px] min-w-0">
+                            <h4 class="text-white text-[1rem] font-bold m-0" data-es="Email" data-en="Email">Email</h4>
+                            <p class="text-slate-400 text-[0.85rem] m-0 break-all">dmartinezperandres@gmail.com</p>
+                        </div>
+                    </a>
+                    <a href="https://www.linkedin.com/in/dmartinezweb" target="_blank" rel="noopener" class="contact-link-card flex items-center gap-[18px] p-[16px_14px] md:p-[18px_22px] text-left bg-bg-light border border-slate-400/10 rounded-[16px] no-underline transition-all duration-300 group hover:border-accent-cyan hover:bg-accent-cyan/5 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(6,182,212,0.1)]">
+                        <div class="contact-icon w-[45px] h-[45px] rounded-[12px] bg-slate-400/5 text-accent-cyan text-[1.2rem] flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
+                            <i class="fab fa-linkedin"></i>
+                        </div>
+                        <div class="contact-link-info flex flex-col gap-[4px] min-w-0">
+                            <h4 class="text-white text-[1rem] font-bold m-0">LinkedIn</h4>
+                            <p class="text-slate-400 text-[0.85rem] m-0 break-all" data-es="Conecta conmigo" data-en="Connect with me">Conecta conmigo</p>
+                        </div>
+                    </a>
+                    <a href="https://github.com/0xdariomp" target="_blank" rel="noopener" class="contact-link-card flex items-center gap-[18px] p-[16px_14px] md:p-[18px_22px] text-left bg-bg-light border border-slate-400/10 rounded-[16px] no-underline transition-all duration-300 group hover:border-accent-cyan hover:bg-accent-cyan/5 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(6,182,212,0.1)]">
+                        <div class="contact-icon w-[45px] h-[45px] rounded-[12px] bg-slate-400/5 text-accent-cyan text-[1.2rem] flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <div class="contact-link-info flex flex-col gap-[4px] min-w-0">
+                            <h4 class="text-white text-[1rem] font-bold m-0">GitHub</h4>
+                            <p class="text-slate-400 text-[0.85rem] m-0 break-all" data-es="Ver mi código" data-en="View my code">Ver mi código</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="contact-form-wrapper bg-bg-light border border-slate-400/20 rounded-[20px] p-[28px_20px] md:p-[40px] relative overflow-hidden before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-linear-to-r before:from-accent-cyan before:via-[#8b5cf6] before:to-accent-blue">
+                <form class="contact-form flex flex-col gap-[22px]" action="https://formsubmit.co/dmartinezperandres@gmail.com" method="POST">
+                    <input type="hidden" name="_subject" value="Nuevo mensaje desde el portfolio de Darío">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_template" value="box">
+                    <input type="hidden" name="_autoresponse" value="Gracias por contactarme. Te responderé lo antes posible. — Darío Martínez">
+                    <div class="form-group flex flex-col gap-[8px]">
+                        <label for="contact-name" class="text-accent-cyan text-[0.78rem] font-bold uppercase tracking-[1.5px] font-mono" data-es="Nombre" data-en="Name">Nombre</label>
+                        <input type="text" id="contact-name" name="name" required class="w-full bg-bg-dark/70 border border-slate-400/10 rounded-[10px] p-[14px_18px] text-white font-mono text-[0.9rem] transition-all duration-300 outline-none focus:border-accent-cyan focus:shadow-[0_0_15px_rgba(6,182,212,0.15)] focus:bg-bg-light placeholder:text-slate-500"
+                               data-es-placeholder="Tu nombre completo"
+                               data-en-placeholder="Your full name"
+                               placeholder="Tu nombre completo">
+                    </div>
+                    <div class="form-group flex flex-col gap-[8px]">
+                        <label for="contact-email" class="text-accent-cyan text-[0.78rem] font-bold uppercase tracking-[1.5px] font-mono">Email</label>
+                        <input type="email" id="contact-email" name="email" required class="w-full bg-bg-dark/70 border border-slate-400/10 rounded-[10px] p-[14px_18px] text-white font-mono text-[0.9rem] transition-all duration-300 outline-none focus:border-accent-cyan focus:shadow-[0_0_15px_rgba(6,182,212,0.15)] focus:bg-bg-light placeholder:text-slate-500" placeholder="tu@email.com">
+                    </div>
+                    <div class="form-group flex flex-col gap-[8px]">
+                        <label for="contact-subject" class="text-accent-cyan text-[0.78rem] font-bold uppercase tracking-[1.5px] font-mono" data-es="Asunto" data-en="Subject">Asunto</label>
+                        <input type="text" id="contact-subject" name="subject" required class="w-full bg-bg-dark/70 border border-slate-400/10 rounded-[10px] p-[14px_18px] text-white font-mono text-[0.9rem] transition-all duration-300 outline-none focus:border-accent-cyan focus:shadow-[0_0_15px_rgba(6,182,212,0.15)] focus:bg-bg-light placeholder:text-slate-500"
+                               data-es-placeholder="¿De qué quieres hablar?"
+                               data-en-placeholder="What would you like to discuss?"
+                               placeholder="¿De qué quieres hablar?">
+                    </div>
+                    <div class="form-group flex flex-col gap-[8px]">
+                        <label for="contact-message" class="text-accent-cyan text-[0.78rem] font-bold uppercase tracking-[1.5px] font-mono" data-es="Mensaje" data-en="Message">Mensaje</label>
+                        <textarea id="contact-message" name="message" required rows="5" class="w-full bg-bg-dark/70 border border-slate-400/10 rounded-[10px] p-[14px_18px] text-white font-mono text-[0.9rem] transition-all duration-300 outline-none focus:border-accent-cyan focus:shadow-[0_0_15px_rgba(6,182,212,0.15)] focus:bg-bg-light placeholder:text-slate-500"
+                                  data-es-placeholder="Cuéntame tu proyecto o idea..."
+                                  data-en-placeholder="Tell me about your project or idea..."
+                                  placeholder="Cuéntame tu proyecto o idea..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-glow form-submit-btn w-full mt-[10px]">
+                        <i class="fas fa-paper-plane"></i>
+                        <span data-es="Enviar Mensaje" data-en="Send Message">Enviar Mensaje</span>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>

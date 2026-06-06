@@ -1,0 +1,723 @@
+---
+// Curiosity — Easter egg page, completamente autónoma con tema matrix/hacker
+---
+
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>// ACCESO CONCEDIDO — Archivo Clasificado</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23050912'/%3E%3Ctext x='3' y='23' font-family='monospace' font-weight='bold' font-size='19' fill='%2300ff88'%3EDM%3C/text%3E%3C/svg%3E">
+    <style>
+        :root {
+            --bg: #050912;
+            --green: #00ff88;
+            --green-dim: rgba(0,255,136,0.08);
+            --green-border: rgba(0,255,136,0.2);
+            --red: #ff3355;
+            --red-dim: rgba(255,51,85,0.08);
+            --cyan: #06b6d4;
+            --purple: #a855f7;
+            --text: #e2e8f0;
+            --muted: #64748b;
+            --muted2: #475569;
+            --gold: #f59e0b;
+            --surface: rgba(15,20,40,0.7);
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+        body {
+            background:var(--bg);
+            color:var(--text);
+            font-family:'Space Mono',monospace;
+            overflow-x:hidden;
+            cursor:crosshair;
+        }
+
+        /* NOISE TEXTURE */
+        body::before {
+            content:'';
+            position:fixed;inset:0;pointer-events:none;z-index:9997;
+            background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            background-size:200px;
+            opacity:.4;
+        }
+        /* SCAN LINES */
+        body::after {
+            content:'';
+            position:fixed;inset:0;pointer-events:none;z-index:9998;
+            background:repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 3px,
+                rgba(0,255,136,.009) 3px,
+                rgba(0,255,136,.009) 4px
+            );
+        }
+
+        #matrix-canvas { position:fixed;inset:0;opacity:.055;pointer-events:none;z-index:0; }
+
+        /* CLASSIFIED WATERMARK */
+        .classified-bg {
+            position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);
+            font-family:'VT323',monospace;font-size:clamp(5rem,15vw,11rem);
+            color:rgba(255,51,85,.028);letter-spacing:8px;pointer-events:none;
+            z-index:0;white-space:nowrap;user-select:none;
+        }
+
+        /* BACK BTN */
+        .back-btn {
+            position:fixed;top:24px;left:24px;z-index:10000;
+            display:flex;align-items:center;gap:8px;padding:9px 18px;
+            background:rgba(5,9,18,.95);border:1px solid var(--green-border);
+            border-radius:4px;color:var(--green);text-decoration:none;
+            font-size:.72rem;letter-spacing:2px;text-transform:uppercase;
+            transition:all .25s;backdrop-filter:blur(12px);
+        }
+        .back-btn:hover { background:var(--green-dim);box-shadow:0 0 24px rgba(0,255,136,.18); }
+
+        /* ACHIEVEMENT */
+        .achievement {
+            position:fixed;top:24px;right:24px;z-index:10000;
+            background:linear-gradient(135deg,rgba(5,9,18,.98),rgba(20,25,50,.98));
+            border:1px solid var(--gold);border-radius:10px;padding:14px 18px;
+            display:flex;align-items:center;gap:14px;max-width:320px;
+            box-shadow:0 8px 40px rgba(245,158,11,.25),inset 0 1px 0 rgba(255,255,255,.05);
+            transform:translateX(420px);opacity:0;
+            transition:all .55s cubic-bezier(.34,1.56,.64,1);
+        }
+        .achievement.show { transform:translateX(0);opacity:1; }
+        .ach-icon {
+            width:46px;height:46px;border-radius:9px;
+            background:linear-gradient(135deg,var(--gold),#fbbf24);
+            display:flex;align-items:center;justify-content:center;
+            font-size:1.4rem;flex-shrink:0;
+            animation:achSpin .5s cubic-bezier(.34,1.56,.64,1) .4s both;
+        }
+        @keyframes achSpin { from{transform:rotate(-180deg) scale(0)} to{transform:rotate(0) scale(1)} }
+        .ach-text { display:flex;flex-direction:column;gap:3px; }
+        .ach-label { font-size:.58rem;color:var(--gold);letter-spacing:3px;text-transform:uppercase;font-weight:700; }
+        .ach-title { font-size:.88rem;color:var(--text);font-weight:700; }
+        .ach-desc { font-size:.68rem;color:var(--muted); }
+
+        /* WRAP */
+        .wrap { position:relative;z-index:1;max-width:860px;margin:0 auto;padding:110px 40px 80px; }
+
+        /* ── HEADER ── */
+        .glitch-header { text-align:center;margin-bottom:80px; }
+        .status-bar {
+            display:inline-flex;align-items:center;gap:10px;
+            font-size:.64rem;letter-spacing:4px;text-transform:uppercase;
+            color:var(--green);margin-bottom:32px;padding:7px 18px;
+            border:1px solid var(--green-border);border-radius:3px;
+            background:var(--green-dim);
+            animation:statusBlink 2.5s step-end infinite;
+        }
+        @keyframes statusBlink { 0%,100%{opacity:1}50%{opacity:.55} }
+        .sdot { width:7px;height:7px;background:var(--green);border-radius:50%;animation:sdotPulse 1.2s ease-in-out infinite; }
+        @keyframes sdotPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(1.4)} }
+
+        .main-title {
+            font-family:'VT323',monospace;
+            font-size:clamp(3rem,11vw,7.5rem);color:var(--green);
+            letter-spacing:6px;text-transform:uppercase;line-height:.88;margin-bottom:14px;
+            text-shadow:0 0 50px rgba(0,255,136,.45),0 0 100px rgba(0,255,136,.15);
+            animation:glitch 5s infinite;
+        }
+        @keyframes glitch {
+            0%,88%,100% { clip-path:none;transform:translate(0);color:var(--green); }
+            90% { clip-path:inset(18% 0 58% 0);transform:translate(-5px,0);color:var(--red); }
+            92% { clip-path:inset(55% 0 8% 0);transform:translate(5px,0);color:var(--cyan); }
+            94% { clip-path:none;transform:translate(0);color:var(--green); }
+        }
+        .main-subtitle { font-size:.78rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-top:14px; }
+        .stamp {
+            display:inline-block;border:3px solid var(--red);color:var(--red);
+            font-family:'VT323',monospace;font-size:1.6rem;letter-spacing:5px;
+            padding:4px 18px;border-radius:3px;transform:rotate(-7deg);opacity:.65;margin-top:20px;
+            text-shadow:0 0 14px rgba(255,51,85,.5);
+            box-shadow:0 0 20px rgba(255,51,85,.12),inset 0 0 20px rgba(255,51,85,.04);
+        }
+
+        /* ── SECTION SEPARATOR ── */
+        .sep {
+            display:flex;align-items:center;gap:16px;margin:0 0 50px;
+        }
+        .sep-badge {
+            font-size:.58rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+            padding:4px 12px;border-radius:3px;flex-shrink:0;
+        }
+        .sep-badge.red { background:var(--red-dim);border:1px solid rgba(255,51,85,.3);color:var(--red); }
+        .sep-badge.cyan { background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.25);color:var(--cyan); }
+        .sep-badge.purple { background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.25);color:var(--purple); }
+        .sep-title { font-family:'VT323',monospace;font-size:1.7rem;color:var(--text);letter-spacing:2px; }
+        .sep-line { flex:1;height:1px;background:linear-gradient(90deg,rgba(100,116,139,.3),transparent); }
+
+        /* ── QUOTE ── */
+        .quote-section {
+            background:var(--green-dim);
+            border:1px solid var(--green-border);border-left:3px solid var(--green);
+            border-radius:0 8px 8px 0;padding:34px 40px 30px;
+            margin-bottom:70px;position:relative;overflow:hidden;
+        }
+        .quote-section::before {
+            content:'"';position:absolute;top:-24px;left:16px;
+            font-family:'VT323',monospace;font-size:7rem;color:var(--green);opacity:.12;line-height:1;
+            pointer-events:none;
+        }
+        .quote-section::after {
+            content:'';position:absolute;top:0;right:0;width:80px;height:100%;
+            background:linear-gradient(90deg,transparent,rgba(0,255,136,.03));pointer-events:none;
+        }
+        .qt { font-family:'VT323',monospace;font-size:1.95rem;color:var(--green);letter-spacing:1px;line-height:1.3;margin-bottom:16px; }
+        .qa { font-size:.71rem;color:var(--muted2);letter-spacing:2px;text-transform:uppercase; }
+
+        /* ── DOSSIER CARDS ── */
+        .d-grid { display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:70px; }
+        .d-card {
+            background:var(--surface);
+            border:1px solid rgba(100,116,139,.15);
+            border-radius:8px;padding:28px 26px 22px;
+            transition:border-color .25s,box-shadow .25s,transform .25s;
+            position:relative;overflow:hidden;
+        }
+        .d-card::before {
+            content:'';position:absolute;top:0;left:0;right:0;height:2px;
+            opacity:0;transition:opacity .25s;
+        }
+        .d-card:nth-child(1)::before { background:linear-gradient(90deg,var(--green),transparent); }
+        .d-card:nth-child(2)::before { background:linear-gradient(90deg,var(--gold),transparent); }
+        .d-card:nth-child(3)::before { background:linear-gradient(90deg,var(--cyan),transparent); }
+        .d-card:nth-child(4)::before { background:linear-gradient(90deg,var(--red),transparent); }
+        .d-card:hover::before { opacity:1; }
+        .d-card:hover {
+            border-color:rgba(100,116,139,.3);
+            box-shadow:0 4px 30px rgba(0,0,0,.4);
+            transform:translateY(-3px);
+        }
+        .d-card-num {
+            position:absolute;top:12px;right:16px;
+            font-family:'VT323',monospace;font-size:3.5rem;color:rgba(100,116,139,.08);
+            line-height:1;pointer-events:none;user-select:none;
+        }
+        .ci { font-size:1.9rem;margin-bottom:14px;display:block; }
+        .cl { font-size:.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted2);margin-bottom:7px; }
+        .ct { font-family:'VT323',monospace;font-size:1.45rem;color:var(--green);margin-bottom:10px;letter-spacing:1px; }
+        .cp { font-size:.77rem;color:var(--muted);line-height:1.75; }
+        .tag {
+            display:inline-flex;align-items:center;gap:5px;font-size:.6rem;
+            letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;
+            border-radius:3px;margin-top:14px;font-weight:700;
+        }
+        .tg { background:var(--green-dim);border:1px solid var(--green-border);color:var(--green); }
+        .tr { background:var(--red-dim);border:1px solid rgba(255,51,85,.28);color:var(--red); }
+        .to { background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.28);color:var(--gold); }
+
+        /* ── STATS ── */
+        .stats-row {
+            display:grid;grid-template-columns:repeat(4,1fr);
+            border:1px solid var(--green-border);border-radius:8px;
+            overflow:hidden;margin-bottom:70px;
+            background:rgba(0,255,136,.025);
+        }
+        .si {
+            text-align:center;padding:24px 12px;position:relative;
+        }
+        .si:not(:last-child)::after {
+            content:'';position:absolute;right:0;top:20%;height:60%;width:1px;
+            background:rgba(100,116,139,.2);
+        }
+        .sn {
+            font-family:'VT323',monospace;font-size:2.8rem;color:var(--green);
+            line-height:1;text-shadow:0 0 20px rgba(0,255,136,.4);
+        }
+        .sl { font-size:.58rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:6px;line-height:1.5; }
+
+        /* ── TERMINAL ── */
+        .term-wrap { margin-bottom:70px; }
+        .term-bar {
+            display:flex;align-items:center;gap:8px;background:rgba(22,26,42,.95);
+            padding:10px 16px;border-radius:8px 8px 0 0;
+            border:1px solid rgba(100,116,139,.18);border-bottom:none;
+        }
+        .tdot { width:12px;height:12px;border-radius:50%; }
+        .tc{background:#ff5f57}.tm{background:#ffbd2e}.tx{background:#28ca41}
+        .ttitle { font-size:.68rem;color:var(--muted);margin-left:8px;letter-spacing:1px; }
+        .ttitle-path { color:var(--green);opacity:.6; }
+        .terminal {
+            background:rgba(4,7,16,.98);border:1px solid rgba(100,116,139,.18);border-top:none;
+            border-radius:0 0 8px 8px;padding:22px;min-height:250px;
+            font-size:.78rem;line-height:1.9;overflow-y:auto;max-height:360px;
+        }
+        .tl { display:flex;gap:8px;margin-bottom:4px; }
+        .tp { color:var(--green);flex-shrink:0; }
+        .tk { color:var(--cyan); }
+        .to2 { margin-left:14px;margin-bottom:2px; }
+        .to2.g{color:var(--green)}.to2.m{color:var(--muted)}.to2.o{color:var(--gold)}.to2.r{color:var(--red)}
+        .tcursor {
+            display:inline-block;width:8px;height:14px;background:var(--green);
+            animation:tcBlink 1s step-end infinite;vertical-align:middle;margin-left:2px;
+        }
+        @keyframes tcBlink { 0%,100%{opacity:1}50%{opacity:0} }
+
+        /* ── FUN FACTS ── */
+        .facts-wrap { margin-bottom:70px; }
+        .fi {
+            display:grid;grid-template-columns:28px 1fr;align-items:start;gap:14px;
+            padding:14px 18px;border-radius:6px;margin-bottom:6px;
+            background:rgba(15,20,40,.4);
+            border:1px solid transparent;
+            transition:border-color .2s,background .2s;
+            font-size:.78rem;color:var(--muted);line-height:1.7;
+        }
+        .fi:hover { border-color:rgba(6,182,212,.2);background:rgba(6,182,212,.03);color:var(--text); }
+        .fi-num {
+            font-family:'VT323',monospace;font-size:1.2rem;color:var(--cyan);
+            opacity:.5;line-height:1.4;text-align:right;
+        }
+
+        /* ── CV ── */
+        .cv-section {
+            background:linear-gradient(135deg,rgba(168,85,247,.06),rgba(6,182,212,.06));
+            border:1px solid rgba(168,85,247,.22);border-radius:8px;
+            padding:36px;text-align:center;margin-bottom:70px;position:relative;overflow:hidden;
+        }
+        .cv-section::before {
+            content:'';position:absolute;inset:0;
+            background:radial-gradient(ellipse at 50% 0%,rgba(168,85,247,.08),transparent 70%);
+            pointer-events:none;
+        }
+        .cv-section h3 {
+            font-family:'VT323',monospace;font-size:1.8rem;color:var(--purple);
+            letter-spacing:3px;margin-bottom:10px;
+        }
+        .cv-section p { font-size:.77rem;color:var(--muted);margin-bottom:28px; }
+        .cv-btns { display:flex;gap:14px;justify-content:center;flex-wrap:wrap; }
+        .cvb {
+            display:inline-flex;align-items:center;gap:9px;padding:12px 26px;border-radius:6px;
+            text-decoration:none;font-size:.74rem;font-weight:700;letter-spacing:1.5px;
+            text-transform:uppercase;transition:all .25s;cursor:pointer;
+            border:none;font-family:'Space Mono',monospace;
+        }
+        .cvb-es { background:var(--purple);color:#fff; }
+        .cvb-es:hover { background:#9333ea;transform:translateY(-3px);box-shadow:0 10px 28px rgba(168,85,247,.38); }
+        .cvb-en { background:transparent;color:var(--cyan);border:2px solid var(--cyan); }
+        .cvb-en:hover { background:rgba(6,182,212,.1);transform:translateY(-3px);box-shadow:0 10px 28px rgba(6,182,212,.12); }
+
+        /* ── BACK TO REALITY ── */
+        .back-r { text-align:center;padding:50px 20px;border-top:1px solid rgba(100,116,139,.12); }
+        .back-r p { font-size:.72rem;color:var(--muted2);letter-spacing:1px;margin-bottom:28px; }
+        .btn-r {
+            display:inline-flex;align-items:center;gap:10px;padding:13px 32px;
+            background:transparent;border:1px solid rgba(0,255,136,.28);border-radius:4px;
+            color:var(--green);font-family:'Space Mono',monospace;font-size:.76rem;
+            letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all .25s;
+        }
+        .btn-r:hover { background:var(--green-dim);box-shadow:0 0 32px rgba(0,255,136,.12);transform:translateY(-2px); }
+
+        @media(max-width:768px) {
+            .wrap { padding:90px 20px 60px; }
+            .d-grid { grid-template-columns:1fr; }
+            .stats-row { grid-template-columns:repeat(2,1fr); }
+            .achievement { right:12px;max-width:calc(100vw - 24px); }
+            .main-title { font-size:3.2rem; }
+            .cv-btns { flex-direction:column;align-items:center; }
+            .quote-section { padding:26px 24px 22px; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="matrix-canvas"></canvas>
+<div class="classified-bg" id="classified-bg">CLASIFICADO</div>
+
+<a href="/" class="back-btn" id="back-top-btn">
+    <i class="fas fa-arrow-left"></i>
+    <span data-i18n="back_btn">Salir</span>
+</a>
+
+<div class="achievement" id="achievement">
+    <div class="ach-icon">🏆</div>
+    <div class="ach-text">
+        <span class="ach-label" data-i18n="ach_label">Logro desbloqueado</span>
+        <span class="ach-title" data-i18n="ach_title">La Curiosidad</span>
+        <span class="ach-desc" data-i18n="ach_desc">Encontraste el archivo clasificado</span>
+    </div>
+</div>
+
+<div class="wrap">
+
+    <!-- HEADER -->
+    <div class="glitch-header">
+        <div class="status-bar">
+            <span class="sdot"></span>
+            <span data-i18n="status_bar">CONEXIÓN SEGURA ESTABLECIDA</span>
+        </div>
+        <h1 class="main-title" data-i18n="main_title">ACCESO<br>CONCEDIDO</h1>
+        <p class="main-subtitle" data-i18n="main_subtitle">// Archivo personal de Darío Martínez — CONFIDENCIAL</p>
+        <div class="stamp" data-i18n="stamp">CLASIFICADO</div>
+    </div>
+
+    <!-- QUOTE -->
+    <div class="quote-section">
+        <p class="qt" data-i18n="quote_text">"La curiosidad mató al gato... pero la satisfacción lo resucitó."</p>
+        <p class="qa" data-i18n="quote_attr">— Los perros, probablemente · Y también un desarrollador que se quedó depurando hasta las 2am</p>
+    </div>
+
+    <!-- DOSSIER -->
+    <div class="sep">
+        <span class="sep-badge red" data-i18n="dossier_badge">CLASSIFIED</span>
+        <span class="sep-title" data-i18n="dossier_title">DOSSIER PERSONAL</span>
+        <div class="sep-line"></div>
+    </div>
+
+    <div class="d-grid">
+        <div class="d-card">
+            <div class="d-card-num">01</div>
+            <span class="ci">⚽</span>
+            <div class="cl" data-i18n="card1_label">Actividad verificada</div>
+            <div class="ct" data-i18n="card1_title">Árbitro de Fútbol</div>
+            <p class="cp" data-i18n="card1_text">Árbitro federado en activo. En el campo aprende que hay decisiones difíciles que tomar con seguridad, exactamente como en una code review.</p>
+            <span class="tag tg"><i class="fas fa-check"></i> <span data-i18n="card1_tag">FEDERADO</span></span>
+        </div>
+        <div class="d-card">
+            <div class="d-card-num">02</div>
+            <span class="ci">🚵</span>
+            <div class="cl" data-i18n="card2_label">Estado: retirado temporalmente</div>
+            <div class="ct" data-i18n="card2_title">Mountain Bike</div>
+            <p class="cp" data-i18n="card2_text">Durante muchos años recorrió rutas y senderos de montaña. La montaña enseña que el camino más difícil suele tener las mejores vistas.</p>
+            <span class="tag to"><i class="fas fa-trophy"></i> <span data-i18n="card2_tag">VETERANO</span></span>
+        </div>
+        <div class="d-card">
+            <div class="d-card-num">03</div>
+            <span class="ci">🐾</span>
+            <div class="cl" data-i18n="card3_label">Nivel de afecto: crítico</div>
+            <div class="ct" data-i18n="card3_title">Amante de los Animales</div>
+            <p class="cp" data-i18n="card3_text">Los animales nunca hacen git blame, nunca piden pull request reviews y siempre están disponibles para el pair programming.</p>
+            <span class="tag tg"><span data-i18n="card3_tag">CONFIRMADO</span></span>
+        </div>
+        <div class="d-card">
+            <div class="d-card-num">04</div>
+            <span class="ci">💻</span>
+            <div class="cl" data-i18n="card4_label">Adicción declarada</div>
+            <div class="ct" data-i18n="card4_title">Desarrollador Web</div>
+            <p class="cp" data-i18n="card4_text">Escribe código que funciona... en su máquina. Especialista en hacer que el cliente diga "¡Exactamente!" cuando ni él sabía lo que quería.</p>
+            <span class="tag tr"><i class="fas fa-fire"></i> <span data-i18n="card4_tag">PASIÓN MÁXIMA</span></span>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+        <div class="si">
+            <div class="sn" data-stat="2">0</div>
+            <div class="sl" data-i18n="stat1_label">Años<br>programando</div>
+        </div>
+        <div class="si">
+            <div class="sn">∞</div>
+            <div class="sl" data-i18n="stat2_label">Cafés<br>consumidos</div>
+        </div>
+        <div class="si">
+            <div class="sn" data-stat="1">0</div>
+            <div class="sl" data-i18n="stat3_label">Easter egg<br>encontrado</div>
+        </div>
+        <div class="si">
+            <div class="sn" data-stat="100" data-suffix="%">0</div>
+            <div class="sl" data-i18n="stat4_label">Curiosidad<br>confirmada</div>
+        </div>
+    </div>
+
+    <!-- TERMINAL -->
+    <div class="term-wrap">
+        <div class="term-bar">
+            <div class="tdot tc"></div><div class="tdot tm"></div><div class="tdot tx"></div>
+            <span class="ttitle">bash — <span class="ttitle-path">dario@classified</span>:~</span>
+        </div>
+        <div class="terminal" id="terminal">
+            <div class="tl">
+                <span class="tp">dario@classified:~$</span>
+                <span class="tk" data-i18n="term_cmd">whoami --classified --verbose</span>
+            </div>
+            <div id="term-out"></div>
+        </div>
+    </div>
+
+    <!-- FUN FACTS -->
+    <div class="facts-wrap">
+        <div class="sep" style="margin-bottom:24px">
+            <span class="sep-badge cyan" data-i18n="facts_badge">FILTRADO</span>
+            <span class="sep-title" data-i18n="facts_title">// DATOS NO DOCUMENTADOS</span>
+            <div class="sep-line"></div>
+        </div>
+        <div class="fi"><span class="fi-num">01</span><span data-i18n="fact1">El mejor código lo escribe entre las 11pm y las 2am. No es sano, pero funciona.</span></div>
+        <div class="fi"><span class="fi-num">02</span><span data-i18n="fact2">Ha encontrado un bug imposible durante 3 horas. Resultó ser un punto y coma. No se habla de ello.</span></div>
+        <div class="fi"><span class="fi-num">03</span><span data-i18n="fact3">Portfolio con página secreta, logros ocultos y lluvia de matriz. El tiempo ha sido bien empleado.</span></div>
+        <div class="fi"><span class="fi-num">04</span><span data-i18n="fact4">Cuando arbitra aplica las mismas reglas que en el código: sin excepciones, sin favoritismos, solo el estándar.</span></div>
+        <div class="fi"><span class="fi-num">05</span><span data-i18n="fact5">Subir montañas en bici y depurar código tienen algo en común: siempre hay otra cuesta que superar.</span></div>
+        <div class="fi"><span class="fi-num">06</span><span data-i18n="fact6">Convencido de que los animales tienen mejor instinto para detectar bugs que cualquier linter.</span></div>
+    </div>
+
+    <!-- CV DOWNLOAD -->
+    <div class="cv-section">
+        <h3 data-i18n="cv_title">// DESCARGA MI CV</h3>
+        <p data-i18n="cv_subtitle">Ya que has llegado hasta aquí... mereces tenerlo.</p>
+        <div class="cv-btns">
+            <a href="/Curriculum Vitae.pdf" download="CV_Dario_Martinez_ES.pdf" class="cvb cvb-es">
+                <i class="fas fa-download"></i> CV en Español
+            </a>
+            <a href="/Curriculum Vitae (English).pdf" download="CV_Dario_Martinez_EN.pdf" class="cvb cvb-en">
+                <i class="fas fa-download"></i> CV in English
+            </a>
+        </div>
+    </div>
+
+    <!-- BACK TO REALITY -->
+    <div class="back-r">
+        <p data-i18n="footer_text">// FIN DEL ARCHIVO CLASIFICADO — Recuerda: nunca estuviste aquí</p>
+        <a href="/" class="btn-r">
+            <i class="fas fa-arrow-left"></i>
+            <span data-i18n="back_btn_footer">Volver a la realidad</span>
+        </a>
+    </div>
+
+</div>
+
+<script is:inline>
+// ── LANGUAGE ──
+const lang = localStorage.getItem('language') || 'es';
+
+const T = {
+    es: {
+        back_btn: 'Salir',
+        ach_label: 'Logro desbloqueado',
+        ach_title: 'La Curiosidad',
+        ach_desc: 'Encontraste el archivo clasificado',
+        status_bar: 'CONEXIÓN SEGURA ESTABLECIDA',
+        main_title: 'ACCESO<br>CONCEDIDO',
+        main_subtitle: '// Archivo personal de Darío Martínez — CONFIDENCIAL',
+        stamp: 'CLASIFICADO',
+        classified_bg: 'CLASIFICADO',
+        quote_text: '"La curiosidad mató al gato... pero la satisfacción lo resucitó."',
+        quote_attr: '— Los perros, probablemente · Y también un desarrollador que se quedó depurando hasta las 2am',
+        dossier_badge: 'CLASSIFIED',
+        dossier_title: 'DOSSIER PERSONAL',
+        card1_label: 'Actividad verificada',
+        card1_title: 'Árbitro de Fútbol',
+        card1_text: 'Árbitro federado en activo. En el campo aprende que hay decisiones difíciles que tomar con seguridad, exactamente como en una code review.',
+        card1_tag: 'FEDERADO',
+        card2_label: 'Estado: retirado temporalmente',
+        card2_title: 'Mountain Bike',
+        card2_text: 'Durante muchos años recorrió rutas y senderos de montaña. La montaña enseña que el camino más difícil suele tener las mejores vistas.',
+        card2_tag: 'VETERANO',
+        card3_label: 'Nivel de afecto: crítico',
+        card3_title: 'Amante de los Animales',
+        card3_text: 'Los animales nunca hacen git blame, nunca piden pull request reviews y siempre están disponibles para el pair programming.',
+        card3_tag: 'CONFIRMADO',
+        card4_label: 'Adicción declarada',
+        card4_title: 'Desarrollador Web',
+        card4_text: 'Escribe código que funciona... en su máquina. Especialista en hacer que el cliente diga "¡Exactamente!" cuando ni él sabía lo que quería.',
+        card4_tag: 'PASIÓN MÁXIMA',
+        stat1_label: 'Años<br>programando',
+        stat2_label: 'Cafés<br>consumidos',
+        stat3_label: 'Easter egg<br>encontrado',
+        stat4_label: 'Curiosidad<br>confirmada',
+        term_cmd: 'whoami --classified --verbose',
+        facts_badge: 'FILTRADO',
+        facts_title: '// DATOS NO DOCUMENTADOS',
+        fact1: 'El mejor código lo escribe entre las 11pm y las 2am. No es sano, pero funciona.',
+        fact2: 'Ha encontrado un bug imposible durante 3 horas. Resultó ser un punto y coma. No se habla de ello.',
+        fact3: 'Portfolio con página secreta, logros ocultos y lluvia de matriz. El tiempo ha sido bien empleado.',
+        fact4: 'Cuando arbitra aplica las mismas reglas que en el código: sin excepciones, sin favoritismos, solo el estándar.',
+        fact5: 'Subir montañas en bici y depurar código tienen algo en común: siempre hay otra cuesta que superar.',
+        fact6: 'Convencido de que los animales tienen mejor instinto para detectar bugs que cualquier linter.',
+        cv_title: '// DESCARGA MI CV',
+        cv_subtitle: 'Ya que has llegado hasta aquí... mereces tenerlo.',
+        footer_text: '// FIN DEL ARCHIVO CLASIFICADO — Recuerda: nunca estuviste aquí',
+        back_btn_footer: 'Volver a la realidad',
+        term_msgs: [
+            {cls:'g', txt:'> Iniciando protocolo de identificación...'},
+            {cls:'m', txt:'> Escaneando perfil...'},
+            {cls:'',  txt:''},
+            {cls:'g', txt:'  NOMBRE   : Darío Martínez Perandres'},
+            {cls:'g', txt:'  ROL      : Web Solutions Architect'},
+            {cls:'g', txt:'  CIUDAD   : Granada, España 🇪🇸'},
+            {cls:'g', txt:'  STACK    : HTML · CSS · JS · PHP · MySQL · n8n · REST API'},
+            {cls:'',  txt:''},
+            {cls:'m', txt:'> Buscando datos adicionales...'},
+            {cls:'o', txt:'  SECRETO  : Árbitro de fútbol federado'},
+            {cls:'o', txt:'  HOBBY    : Ex-mountain biker con muchos KM en las piernas'},
+            {cls:'o', txt:'  DEBILIDAD: Los animales. Especialmente los perros.'},
+            {cls:'',  txt:''},
+            {cls:'m', txt:'> Evaluando nivel de peligro...'},
+            {cls:'g', txt:'  NIVEL    : 🔥 DESARROLLADOR PELIGROSAMENTE APASIONADO'},
+            {cls:'',  txt:''},
+            {cls:'g', txt:'> [✓] Acceso concedido. No cuentes esto a nadie.'},
+        ]
+    },
+    en: {
+        back_btn: 'Exit',
+        ach_label: 'Achievement unlocked',
+        ach_title: 'The Curiosity',
+        ach_desc: 'You found the classified file',
+        status_bar: 'SECURE CONNECTION ESTABLISHED',
+        main_title: 'ACCESS<br>GRANTED',
+        main_subtitle: '// Personal file of Darío Martínez — CONFIDENTIAL',
+        stamp: 'CLASSIFIED',
+        classified_bg: 'CLASSIFIED',
+        quote_text: '"Curiosity killed the cat... but satisfaction brought it back."',
+        quote_attr: '— The dogs, probably · Also a developer who stayed debugging until 2am',
+        dossier_badge: 'CLASSIFIED',
+        dossier_title: 'PERSONAL DOSSIER',
+        card1_label: 'Verified activity',
+        card1_title: 'Football Referee',
+        card1_text: 'Active licensed referee. On the pitch he learns that hard decisions must be made with confidence — exactly like in a code review.',
+        card1_tag: 'LICENSED',
+        card2_label: 'Status: temporarily retired',
+        card2_title: 'Mountain Bike',
+        card2_text: 'For many years he rode trails and mountain paths. The mountain teaches that the hardest routes usually have the best views.',
+        card2_tag: 'VETERAN',
+        card3_label: 'Affection level: critical',
+        card3_title: 'Animal Lover',
+        card3_text: 'Animals never do git blame, never ask for pull request reviews, and are always available for pair programming.',
+        card3_tag: 'CONFIRMED',
+        card4_label: 'Declared addiction',
+        card4_title: 'Web Developer',
+        card4_text: "Writes code that works... on his machine. Specialist in making clients say \"That's exactly it!\" when even they didn't know what they wanted.",
+        card4_tag: 'MAX PASSION',
+        stat1_label: 'Years<br>coding',
+        stat2_label: 'Coffees<br>consumed',
+        stat3_label: 'Easter egg<br>found',
+        stat4_label: 'Curiosity<br>confirmed',
+        term_cmd: 'whoami --classified --verbose',
+        facts_badge: 'LEAKED',
+        facts_title: '// UNDOCUMENTED DATA',
+        fact1: 'Best code gets written between 11pm and 2am. Not healthy, but it works.',
+        fact2: "Spent 3 hours on an impossible bug. It was a semicolon. We don't talk about it.",
+        fact3: 'Portfolio with a secret page, hidden achievements and a matrix rain. Time well spent.',
+        fact4: 'When refereeing, he applies the same rules as in code: no exceptions, no favouritism, just the standard.',
+        fact5: 'Climbing mountains on a bike and debugging code share one thing: there is always another hill ahead.',
+        fact6: 'Firmly believes animals have a better instinct for spotting bugs than any linter.',
+        cv_title: '// DOWNLOAD MY CV',
+        cv_subtitle: 'Since you made it this far... you deserve it.',
+        footer_text: '// END OF CLASSIFIED FILE — Remember: you were never here',
+        back_btn_footer: 'Back to reality',
+        term_msgs: [
+            {cls:'g', txt:'> Initiating identification protocol...'},
+            {cls:'m', txt:'> Scanning profile...'},
+            {cls:'',  txt:''},
+            {cls:'g', txt:'  NAME     : Darío Martínez Perandres'},
+            {cls:'g', txt:'  ROLE     : Web Solutions Architect'},
+            {cls:'g', txt:'  CITY     : Granada, Spain 🇪🇸'},
+            {cls:'g', txt:'  STACK    : HTML · CSS · JS · PHP · MySQL · n8n · REST API'},
+            {cls:'',  txt:''},
+            {cls:'m', txt:'> Fetching additional data...'},
+            {cls:'o', txt:'  SECRET   : Licensed football referee'},
+            {cls:'o', txt:'  HOBBY    : Ex-mountain biker with plenty of KMs on his legs'},
+            {cls:'o', txt:'  WEAKNESS : Animals. Dogs especially.'},
+            {cls:'',  txt:''},
+            {cls:'m', txt:'> Evaluating threat level...'},
+            {cls:'g', txt:'  LEVEL    : 🔥 DANGEROUSLY PASSIONATE DEVELOPER'},
+            {cls:'',  txt:''},
+            {cls:'g', txt:"> [✓] Access granted. Don't tell anyone about this."},
+        ]
+    }
+};
+
+// Apply translations
+const t = T[lang] || T.es;
+document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[key] !== undefined) el.innerHTML = t[key];
+});
+document.getElementById('classified-bg').textContent = t.classified_bg;
+document.documentElement.lang = lang;
+
+// ── MATRIX RAIN ──
+(function(){
+    const c = document.getElementById('matrix-canvas');
+    const ctx = c.getContext('2d');
+    function resize(){ c.width = window.innerWidth; c.height = window.innerHeight; }
+    resize(); window.addEventListener('resize', resize);
+    const chars = '01アイウエオカキクdariowebmartinez</>{}[]SQL404';
+    const fs = 13;
+    let drops;
+    function initDrops(){ drops = Array(Math.floor(c.width/fs)).fill(1); }
+    initDrops(); window.addEventListener('resize', initDrops);
+    setInterval(()=>{
+        ctx.fillStyle = 'rgba(5,9,18,.055)';
+        ctx.fillRect(0,0,c.width,c.height);
+        ctx.fillStyle = '#00ff88';
+        ctx.font = fs+'px Space Mono';
+        drops.forEach((y,i)=>{
+            ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fs, y*fs);
+            if(y*fs > c.height && Math.random() > .975) drops[i] = 0;
+            drops[i]++;
+        });
+    }, 50);
+})();
+
+// ── ACHIEVEMENT ──
+setTimeout(()=>{
+    const a = document.getElementById('achievement');
+    a.classList.add('show');
+    setTimeout(()=>a.classList.remove('show'), 5500);
+}, 900);
+
+// ── STAT COUNT-UP ──
+function animateStat(el, target, suffix){
+    const dur = 1200;
+    const start = performance.now();
+    function step(now){
+        const p = Math.min((now-start)/dur, 1);
+        const ease = 1 - Math.pow(1-p, 3);
+        el.textContent = Math.round(ease*target) + (suffix||'');
+        if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+}
+const statObserver = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+        if(!e.isIntersecting) return;
+        const el = e.target;
+        const target = parseInt(el.dataset.stat, 10);
+        const suffix = el.dataset.suffix || '';
+        if(!isNaN(target)) animateStat(el, target, suffix);
+        statObserver.unobserve(el);
+    });
+}, {threshold:.5});
+document.querySelectorAll('[data-stat]').forEach(el=>statObserver.observe(el));
+
+// ── TERMINAL TYPEWRITER ──
+const msgs = t.term_msgs;
+const out = document.getElementById('term-out');
+let i = 0;
+function next(){
+    if(i >= msgs.length){
+        const cur = document.createElement('span');
+        cur.className = 'tcursor';
+        out.appendChild(cur);
+        return;
+    }
+    const m = msgs[i++];
+    const el = document.createElement('div');
+    el.className = 'to2 ' + m.cls;
+    el.textContent = m.txt;
+    el.style.opacity = '0';
+    out.appendChild(el);
+    requestAnimationFrame(()=>{ el.style.transition = 'opacity .2s'; el.style.opacity = '1'; });
+    out.scrollTop = out.scrollHeight;
+    setTimeout(next, m.txt === '' ? 160 : 90 + Math.random()*130);
+}
+setTimeout(next, 1400);
+
+// ── CONSOLE ──
+console.log('%c// ACCESS GRANTED — Hello, curious inspector!', 'color:#00ff88;font-size:14px;font-family:monospace');
+console.log('%cYou inspect the code too? I like that.\n→ dmartinezperandres@gmail.com', 'color:#06b6d4;font-size:12px;font-family:monospace');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+---
+// FloatingUI.astro
+---
+<!-- SCROLL PROGRESS BAR -->
+<div class="scroll-progress-bar fixed top-0 left-0 h-[3px] bg-linear-to-r from-accent-cyan to-[#8b5cf6] w-0 z-9999 transition-[width] duration-100 ease-out shadow-[0_0_10px_rgba(6,182,212,0.5)]"></div>
+
+<!-- SECRET BUTTON - DO NOT TOUCH -->
+<button class="secret-btn absolute top-[15px] right-[15px] bg-transparent border-none text-[0.8rem] opacity-10 cursor-pointer z-100 transition-all duration-300 w-[30px] h-[30px] flex items-center justify-center rounded-full hover:opacity-100 hover:bg-red-500/10 hover:shadow-[0_0_10px_rgba(255,0,0,0.3)]" id="curiosity-btn" title="¿Seguro?" aria-label="Botón secreto">
+    <span>🚫</span>
+</button>
+
+<!-- SCROLL TO TOP -->
+<button class="scroll-top-btn fixed bottom-[30px] right-[30px] w-[44px] h-[44px] bg-bg-dark/90 border border-accent-cyan/20 rounded-[8px] text-accent-cyan text-[0.85rem] flex items-center justify-center cursor-pointer backdrop-blur-[10px] transition-all duration-300 opacity-0 translate-y-[16px] pointer-events-none z-900 [&.visible]:opacity-100 [&.visible]:translate-y-0 [&.visible]:pointer-events-auto hover:bg-accent-cyan/10 hover:border-accent-cyan hover:translate-y-[-3px] hover:shadow-[0_8px_24px_rgba(6,182,212,0.2)]" id="scroll-top-btn" aria-label="Volver al inicio de la página">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- DECORATIVE ELEMENTS -->
+<div class="side-line hidden md:block"></div>
+<div class="gradient-orb top"></div>
+<div class="gradient-orb bottom"></div>
+<canvas id="interactive-canvas"></canvas>
+
+<!-- CONTACT POPUP -->
+<div id="contact-popup" class="contact-popup fixed inset-0 z-99999 hidden items-center justify-center [&.active]:flex [&.active]:animate-[fadeIn_0.4s_ease-out]" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+    <div class="contact-popup-overlay absolute inset-0 bg-bg-darker/85 backdrop-blur-[10px] z-0"></div>
+    <div class="contact-popup-content bg-linear-to-br from-bg-lighter to-bg-light border border-accent-cyan/20 rounded-[24px] px-6 pt-[44px] pb-[36px] md:px-10 md:pt-[50px] md:pb-[44px] max-w-[480px] w-[92%] text-center relative z-10 shadow-[0_20px_60px_rgba(0,0,0,0.6)] overflow-hidden before:absolute before:top-0 before:left-0 before:right-0 before:h-[3px] before:bg-linear-to-r before:from-accent-cyan before:via-accent-purple before:to-accent-blue">
+        <button class="contact-popup-close absolute top-4 right-4 w-[34px] h-[34px] bg-bg-dark/80 border border-slate-400/10 rounded-full text-slate-400 cursor-pointer flex items-center justify-center transition-all duration-300 hover:bg-red-500/15 hover:text-red-500 hover:border-red-500/30 hover:rotate-90 z-20" id="popup-close" aria-label="Cerrar">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="popup-icon w-[76px] h-[76px] bg-linear-to-br from-accent-cyan/10 to-accent-purple/10 border border-accent-cyan/30 rounded-full flex items-center justify-center text-[2rem] text-accent-cyan mx-auto mb-6 shadow-[0_0_20px_rgba(6,182,212,0.15)]">
+            <i class="fas fa-handshake"></i>
+        </div>
+        <h3 class="popup-title text-[1.8rem] mb-4 text-white font-bold" id="popup-title" data-es="¿Te interesa lo que ves?" data-en="Interested in what you see?">¿Te interesa lo que ves?</h3>
+        <p class="popup-text text-[0.95rem] text-slate-400 mb-8 leading-[1.6]" data-es="¡Pongámonos en contacto! Estoy disponible para proyectos freelance, colaboraciones y nuevas oportunidades." data-en="Let's get in touch! I'm available for freelance projects, collaborations and new opportunities.">
+            ¡Pongámonos en contacto! Estoy disponible para proyectos freelance, colaboraciones y nuevas oportunidades.
+        </p>
+        <div class="popup-buttons flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <button class="btn btn-primary btn-glow w-full sm:w-auto" id="popup-contact-btn">
+                <i class="fas fa-envelope"></i>
+                <span data-es="¡Hablemos!" data-en="Let's talk!">¡Hablemos!</span>
+            </button>
+            <button class="btn btn-secondary w-full sm:w-auto" id="popup-later-btn">
+                <span data-es="Quizás más tarde" data-en="Maybe later">Quizás más tarde</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ACCESSIBILITY WIDGET -->
+<div class="a11y-widget fixed bottom-[90px] right-[30px] z-99999 text-[14px]">
+    <button class="a11y-toggle-btn w-[44px] h-[44px] bg-bg-dark/92 border border-accent-cyan/30 rounded-full text-accent-cyan text-[16px] cursor-pointer flex items-center justify-center backdrop-blur-[10px] transition-all duration-300 shadow-[0_4px_15px_rgba(0,0,0,0.3)] hover:bg-accent-cyan/15 hover:shadow-[0_6px_28px_rgba(6,182,212,0.35)] hover:scale-105" id="a11y-toggle" title="Opciones de accesibilidad" aria-label="Abrir panel de accesibilidad">
+        <i class="fas fa-universal-access"></i>
+    </button>
+    <div class="a11y-panel absolute bottom-[54px] right-0 w-[300px] bg-[#080b1e]/98 border border-accent-cyan/25 rounded-[14px] hidden backdrop-blur-[20px] shadow-[0_15px_40px_rgba(0,0,0,0.5)] [&.open]:block" id="a11y-panel" role="dialog" aria-label="Panel de accesibilidad">
+        <div class="a11y-panel-header flex items-center justify-between py-[12px] px-[16px] border-b border-slate-400/10 text-[11px] font-bold tracking-[2px] uppercase text-accent-cyan">
+            <span><i class="fas fa-universal-access" style="margin-right:6px"></i><span data-es="Accesibilidad" data-en="Accessibility">Accesibilidad</span></span>
+            <button class="a11y-close-btn bg-transparent border-none text-slate-500 cursor-pointer text-[14px] py-[2px] px-[5px] rounded-[4px] transition-colors duration-200 leading-none hover:text-slate-200" id="a11y-close" aria-label="Cerrar">✕</button>
+        </div>
+
+        <div class="a11y-row-item grid grid-cols-[80px_1fr] items-center gap-2 py-[9px] px-[16px] border-b border-slate-400/10 last:border-none">
+            <span class="a11y-row-label text-[10px] font-bold tracking-[1.5px] uppercase text-slate-500 whitespace-nowrap overflow-hidden text-ellipsis" data-es="Texto" data-en="Text">Texto</span>
+            <div class="a11y-chips flex gap-1 flex-nowrap overflow-x-auto scrollbar-none">
+                <button class="a11y-chip py-1 px-2 bg-slate-400/10 border border-slate-400/15 rounded-[5px] text-slate-500 text-[11px] font-mono cursor-pointer transition-all duration-200 whitespace-nowrap hover:border-accent-cyan hover:text-accent-cyan [&.active]:bg-accent-cyan/15 [&.active]:border-accent-cyan [&.active]:text-accent-cyan [&.active]:font-bold" data-a11y="font" data-val="14">A−</button>
+                <button class="a11y-chip active py-1 px-2 bg-slate-400/10 border border-slate-400/15 rounded-[5px] text-slate-500 text-[11px] font-mono cursor-pointer transition-all duration-200 whitespace-nowrap hover:border-accent-cyan hover:text-accent-cyan [&.active]:bg-accent-cyan/15 [&.active]:border-accent-cyan [&.active]:text-accent-cyan [&.active]:font-bold" data-a11y="font" data-val="16">A</button>
+                <button class="a11y-chip py-1 px-2 bg-slate-400/10 border border-slate-400/15 rounded-[5px] text-slate-500 text-[11px] font-mono cursor-pointer transition-all duration-200 whitespace-nowrap hover:border-accent-cyan hover:text-accent-cyan [&.active]:bg-accent-cyan/15 [&.active]:border-accent-cyan [&.active]:text-accent-cyan [&.active]:font-bold" data-a11y="font" data-val="18">A+</button>
+                <button class="a11y-chip py-1 px-2 bg-slate-400/10 border border-slate-400/15 rounded-[5px] text-slate-500 text-[11px] font-mono cursor-pointer transition-all duration-200 whitespace-nowrap hover:border-accent-cyan hover:text-accent-cyan [&.active]:bg-accent-cyan/15 [&.active]:border-accent-cyan [&.active]:text-accent-cyan [&.active]:font-bold" data-a11y="font" data-val="21">A++</button>
+            </div>
+        </div>
+
+        <div class="a11y-row-item grid grid-cols-[80px_1fr] items-center gap-2 py-[9px] px-[16px] border-b border-slate-400/10 last:border-none">
+            <span class="a11y-row-label text-[10px] font-bold tracking-[1.5px] uppercase text-slate-500 whitespace-nowrap overflow-hidden text-ellipsis" data-es="Contraste" data-en="Contrast">Contraste</span>
+            <div class="a11y-chips flex gap-1 flex-nowrap overflow-x-auto scrollbar-none">
+                <button class="a11y-chip active py-1 px-2 bg-slate-400/10 border border-slate-400/15 rounded-[5px] text-slate-500 text-[11px] font-mono cursor-pointer transition-all duration-200 whitespace-nowrap hover:border-accent-cyan hover:text-accent-cyan [&.active]:bg-accent-cyan/15 [&.active]:border-accent-cyan [&.active]:text-accent-cyan [&.active]:font-bold" data-a11y="contrast" data-val="normal" data-es="Normal" data-en="Normal">Normal</button>
+                <button class="a11y-chip py-1 px-2 bg-slate-400/10 border border-slate-400/15 rounded-[5px] text-slate-500 text-[11px] font-mono cursor-pointer transition-all duration-200 whitespace-nowrap hover:border-accent-cyan hover:text-accent-cyan [&.active]:bg-accent-cyan/15 [&.active]:border-accent-cyan [&.active]:text-accent-cyan [&.active]:font-bold" data-a11y="contrast" data-val="high" data-es="Alto" data-en="High">Alto</button>
+                <button class="a11y-chip py-1 px-2 bg-slate-400/10 border border-slate-400/15 rounded-[5px] text-slate-500 text-[11px] font-mono cursor-pointer transition-all duration-200 whitespace-nowrap hover:border-accent-cyan hover:text-accent-cyan [&.active]:bg-accent-cyan/15 [&.active]:border-accent-cyan [&.active]:text-accent-cyan [&.active]:font-bold" data-a11y="contrast" data-val="inverted" data-es="Invertir" data-en="Invert">Invertir</button>
+            </div>
+        </div>
+
+        <div class="a11y-row-item grid grid-cols-[80px_1fr] items-center gap-2 py-[9px] px-[16px] border-b border-slate-400/10 last:border-none">
+            <span class="a11y-row-label text-[10px] font-bold tracking-[1.5px] uppercase text-slate-500 whitespace-nowrap overflow-hidden text-ellipsis" data-es="Color" data-en="Color">Color</span>
+            <div class="a11y-chips flex gap-1 flex-nowrap overflow-x-auto scrollbar-none">
+                <button class="a11y-chip active py-1 px-2 bg-slate-400/10 border border-slate-400/15 rounded-[5px] text-slate-500 text-[11px] font-mono cursor-pointer transition-all duration-200 whitespace-nowrap hover:border-accent-cyan hover:text-accent-cyan [&.active]:bg-accent-cyan/15 [&.active]:border-accent-cyan [&.active]:text-accent-cyan [&.active]:font-bold" data-a11y="color" data-val="normal" data-es="Normal" data-en="Normal">Normal</button>
+                <button class="a11y-chip py-1 px-2 bg-slate-400/10 border border-slate-400/15 rounded-[5px] text-slate-500 text-[11px] font-mono cursor-pointer transition-all duration-200 whitespace-nowrap hover:border-accent-cyan hover:text-accent-cyan [&.active]:bg-accent-cyan/15 [&.active]:border-accent-cyan [&.active]:text-accent-cyan [&.active]:font-bold" data-a11y="color" data-val="deuteranopia">Deut.</button>
+                <button class="a11y-chip py-1 px-2 bg-slate-400/10 border border-slate-400/15 rounded-[5px] text-slate-500 text-[11px] font-mono cursor-pointer transition-all duration-200 whitespace-nowrap hover:border-accent-cyan hover:text-accent-cyan [&.active]:bg-accent-cyan/15 [&.active]:border-accent-cyan [&.active]:text-accent-cyan [&.active]:font-bold" data-a11y="color" data-val="protanopia">Prot.</button>
+                <button class="a11y-chip py-1 px-2 bg-slate-400/10 border border-slate-400/15 rounded-[5px] text-slate-500 text-[11px] font-mono cursor-pointer transition-all duration-200 whitespace-nowrap hover:border-accent-cyan hover:text-accent-cyan [&.active]:bg-accent-cyan/15 [&.active]:border-accent-cyan [&.active]:text-accent-cyan [&.active]:font-bold" data-a11y="color" data-val="grayscale" data-es="Grises" data-en="Gray">Grises</button>
+            </div>
+        </div>
+
+        <div class="a11y-row-item grid grid-cols-[80px_1fr] items-center gap-2 py-[9px] px-[16px] border-b border-slate-400/10 last:border-none">
+            <span class="a11y-row-label text-[10px] font-bold tracking-[1.5px] uppercase text-slate-500 whitespace-nowrap overflow-hidden text-ellipsis" data-es="Movimiento" data-en="Motion">Movimiento</span>
+            <div class="a11y-chips flex gap-1 flex-nowrap overflow-x-auto scrollbar-none">
+                <button class="a11y-chip active py-1 px-2 bg-slate-400/10 border border-slate-400/15 rounded-[5px] text-slate-500 text-[11px] font-mono cursor-pointer transition-all duration-200 whitespace-nowrap hover:border-accent-cyan hover:text-accent-cyan [&.active]:bg-accent-cyan/15 [&.active]:border-accent-cyan [&.active]:text-accent-cyan [&.active]:font-bold" data-a11y="motion" data-val="normal" data-es="Normal" data-en="Normal">Normal</button>
+                <button class="a11y-chip py-1 px-2 bg-slate-400/10 border border-slate-400/15 rounded-[5px] text-slate-500 text-[11px] font-mono cursor-pointer transition-all duration-200 whitespace-nowrap hover:border-accent-cyan hover:text-accent-cyan [&.active]:bg-accent-cyan/15 [&.active]:border-accent-cyan [&.active]:text-accent-cyan [&.active]:font-bold" data-a11y="motion" data-val="reduced" data-es="Reducir" data-en="Reduce">Reducir</button>
+                <button class="a11y-chip py-1 px-2 bg-slate-400/10 border border-slate-400/15 rounded-[5px] text-slate-500 text-[11px] font-mono cursor-pointer transition-all duration-200 whitespace-nowrap hover:border-accent-cyan hover:text-accent-cyan [&.active]:bg-accent-cyan/15 [&.active]:border-accent-cyan [&.active]:text-accent-cyan [&.active]:font-bold" data-a11y="motion" data-val="off" data-es="Ninguno" data-en="None">Ninguno</button>
+            </div>
+        </div>
+
+        <button class="a11y-reset-btn block mt-2 mx-4 mb-2.5 py-2 px-3 bg-transparent border border-slate-400/15 rounded-[7px] text-slate-500 text-[11px] font-mono cursor-pointer transition-all duration-200 text-center w-[calc(100%-32px)] hover:border-red-500/40 hover:text-red-500" id="a11y-reset" data-es="↺ Restablecer" data-en="↺ Reset">↺ Restablecer</button>
+    </div>
+</div>
+
+<!-- CV VIEWER MODAL -->
+<div id="cv-modal" class="cv-modal fixed top-0 left-0 w-full h-full z-10000 hidden items-center justify-center [&.active]:flex [&.active]:animate-[fadeIn_0.3s_ease-out]" role="dialog" aria-modal="true" aria-labelledby="cv-modal-title">
+    <div class="cv-modal-content bg-bg-light border border-accent-cyan/20 rounded-[20px] w-[90%] max-w-[900px] h-[90vh] flex flex-col relative z-10 shadow-[0_20px_60px_rgba(0,0,0,0.6)] overflow-hidden">
+        <button class="cv-modal-close absolute top-[20px] right-[20px] w-[40px] h-[40px] bg-bg-dark border border-white/10 rounded-full text-white cursor-none flex items-center justify-center transition-all duration-300 z-20 hover:bg-accent-cyan hover:text-bg-dark hover:rotate-90" id="cv-modal-close" aria-label="Cerrar modal de CV">
+            <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+        <div class="cv-modal-header p-[30px] border-b border-white/10 flex justify-between items-center">
+            <h2 id="cv-modal-title" class="m-0 text-[1.8rem]" data-es="Currículum Vitae" data-en="Resume">Currículum Vitae</h2>
+            <a href="/Curriculum Vitae.pdf" id="cv-download-link" class="btn btn-primary" download>
+                <i class="fas fa-download" aria-hidden="true"></i>
+                <span data-es="Descargar PDF" data-en="Download PDF">Descargar PDF</span>
+            </a>
+        </div>
+        <div id="cv-viewer" class="cv-viewer flex-1 overflow-hidden">
+            <iframe id="cv-iframe" class="w-full h-full border-none bg-white" src="/Curriculum Vitae.pdf" title="Currículum Vitae en PDF"></iframe>
+        </div>
+    </div>
+    <div class="cv-modal-overlay absolute top-0 left-0 right-0 bottom-0 bg-black/70 backdrop-blur-[5px] -z-10"></div>
+</div>

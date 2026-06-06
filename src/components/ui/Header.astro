@@ -1,0 +1,45 @@
+---
+// Header.astro
+---
+<header class="sticky top-0 z-999 bg-bg-dark/70 backdrop-blur-[20px] border-b border-slate-400/10 py-5 transition-all duration-300 header" id="main-header">
+    <nav class="max-w-[1400px] mx-auto px-5 md:px-[60px] flex justify-between items-center relative">
+        <a href="#hero" class="text-[1.3rem] font-normal bg-linear-to-br from-accent-cyan to-[#8b5cf6] text-transparent bg-clip-text font-['VT323'] tracking-[3px] uppercase transition-all duration-300 hover:drop-shadow-[0_0_10px_#06b6d4] cursor-none flex items-center">
+            <span class="logo-text">DM</span>
+            <span class="animate-pulse text-accent-cyan drop-shadow-[0_0_8px_#06b6d4]">.</span>
+        </a>
+        <div class="nav-links hidden md:flex md:static absolute top-[calc(100%+20px)] left-[-20px] right-[-20px] flex-col md:flex-row gap-0 md:gap-10 bg-bg-dark/98 md:bg-transparent backdrop-blur-[20px] md:backdrop-blur-none border-y border-slate-400/10 md:border-none py-2 md:py-0 z-1000 [&.open]:flex" id="nav-links">
+            <a href="#about" class="text-slate-400 font-medium relative transition-colors duration-300 hover:text-accent-cyan group cursor-none px-6 py-3 md:p-0 border-b border-slate-400/10 md:border-none" data-es="Sobre mí" data-en="About">
+                Sobre mí
+                <span class="hidden md:block absolute bottom-[-5px] left-0 w-0 h-[2px] bg-linear-to-r from-accent-cyan to-[#8b5cf6] transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="#skills" class="text-slate-400 font-medium relative transition-colors duration-300 hover:text-accent-cyan group cursor-none px-6 py-3 md:p-0 border-b border-slate-400/10 md:border-none" data-es="Habilidades" data-en="Skills">
+                Habilidades
+                <span class="hidden md:block absolute bottom-[-5px] left-0 w-0 h-[2px] bg-linear-to-r from-accent-cyan to-[#8b5cf6] transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="#projects" class="text-slate-400 font-medium relative transition-colors duration-300 hover:text-accent-cyan group cursor-none px-6 py-3 md:p-0 border-b border-slate-400/10 md:border-none" data-es="Proyectos" data-en="Projects">
+                Proyectos
+                <span class="hidden md:block absolute bottom-[-5px] left-0 w-0 h-[2px] bg-linear-to-r from-accent-cyan to-[#8b5cf6] transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="#contact" class="text-slate-400 font-medium relative transition-colors duration-300 hover:text-accent-cyan group cursor-none px-6 py-3 md:p-0" data-es="Contacto" data-en="Contact">
+                Contacto
+                <span class="hidden md:block absolute bottom-[-5px] left-0 w-0 h-[2px] bg-linear-to-r from-accent-cyan to-[#8b5cf6] transition-all duration-300 group-hover:w-full"></span>
+            </a>
+        </div>
+        <div class="nav-actions flex items-center gap-[10px] md:gap-[20px]">
+            <div class="language-toggle flex items-center bg-bg-dark/80 rounded-[20px] p-[3px] border border-slate-400/10 backdrop-blur-[10px] relative overflow-hidden" role="group" aria-label="Selector de idioma">
+                <button class="lang-btn relative px-3 py-1 bg-transparent border-none text-slate-400 font-bold text-[0.8rem] rounded-[16px] cursor-none z-10 transition-colors duration-300 [&.active]:text-bg-dark [&.active]:bg-accent-cyan" data-lang="es" title="Español" aria-label="Cambiar a Español">
+                    <span>ES</span>
+                </button>
+                <button class="lang-btn relative px-3 py-1 bg-transparent border-none text-slate-400 font-bold text-[0.8rem] rounded-[16px] cursor-none z-10 transition-colors duration-300 [&.active]:text-bg-dark [&.active]:bg-accent-cyan" data-lang="en" title="English" aria-label="Switch to English">
+                    <span>EN</span>
+                </button>
+            </div>
+            <button class="nav-hamburger md:hidden flex flex-col justify-center gap-[5px] bg-transparent border-none cursor-pointer p-2 rounded-md transition-colors hover:bg-cyan-500/10 z-1001 [&.open_span:nth-child(1)]:translate-y-[7px] [&.open_span:nth-child(1)]:rotate-45 [&.open_span:nth-child(1)]:bg-accent-cyan [&.open_span:nth-child(2)]:opacity-0 [&.open_span:nth-child(2)]:scale-x-0 [&.open_span:nth-child(3)]:translate-y-[-7px] [&.open_span:nth-child(3)]:-rotate-45 [&.open_span:nth-child(3)]:bg-accent-cyan" id="nav-hamburger" aria-label="Abrir menú de navegación" aria-expanded="false">
+                <span class="block w-[22px] h-[2px] bg-slate-400 rounded-[2px] transition-all duration-250 pointer-events-none"></span>
+                <span class="block w-[22px] h-[2px] bg-slate-400 rounded-[2px] transition-all duration-250 pointer-events-none"></span>
+                <span class="block w-[22px] h-[2px] bg-slate-400 rounded-[2px] transition-all duration-250 pointer-events-none"></span>
+            </button>
+        </div>
+        <div class="nav-indicator absolute bottom-0 left-0 h-[2px] bg-linear-to-r from-accent-cyan to-[#8b5cf6] w-0 transition-all duration-300 hidden md:block" style="transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);"></div>
+    </nav>
+</header>

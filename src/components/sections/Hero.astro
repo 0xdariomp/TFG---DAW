@@ -1,0 +1,58 @@
+---
+// Hero.astro
+---
+<section class="fade flex items-center justify-center px-[20px] py-[60px] md:px-[60px] md:py-[120px] min-h-auto md:min-h-screen relative z-10" id="hero">
+    <div class="grid grid-cols-1 gap-[40px] md:gap-[50px] lg:grid-cols-2 lg:gap-[80px] items-center w-full max-w-[1280px] text-center lg:text-left">
+        <div class="hero-text">
+            <h1 class="text-[2.5rem] md:text-[4rem] font-extrabold leading-none mb-[20px] overflow-hidden" data-stagger="true">
+                <span class="title-letter">D</span><span class="title-letter">a</span><span class="title-letter">r</span><span class="title-letter">í</span><span class="title-letter">o</span>
+                <br>
+                <span class="title-accent">
+                    <span class="title-letter">M</span><span class="title-letter">a</span><span class="title-letter">r</span><span class="title-letter">t</span><span class="title-letter">í</span><span class="title-letter">n</span><span class="title-letter">e</span><span class="title-letter">z</span>
+                </span>
+            </h1>
+            <h2 class="hero-subtitle text-[1.3rem] font-normal text-accent-cyan mb-[20px]" data-es="Desarrollador Web Frontend" data-en="Frontend Web Developer">Desarrollador Web Frontend</h2>
+            <p class="hero-description mb-[40px]" data-es="Diseño y construyo interfaces web que combinan velocidad, estética y funcionalidad — con base sólida en frontend y conocimientos de backend para entregar soluciones completas." data-en="I design and build web interfaces that combine speed, aesthetics and functionality — solid frontend skills and backend knowledge to deliver complete solutions.">
+                Diseño y construyo interfaces web que combinan velocidad, estética y funcionalidad — con base sólida en frontend y conocimientos de backend.
+            </p>
+            <div class="hero-cta flex flex-col md:flex-row gap-[20px] mt-[50px] flex-wrap w-full md:w-auto items-center md:justify-start">
+                <a href="#projects" class="btn btn-primary btn-glow w-full md:w-auto justify-center" title="Ver proyectos y trabajos realizados">
+                    <span data-es="Explorar Trabajo" data-en="Explore Work">Explorar Trabajo</span>
+                    <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                </a>
+                <button class="btn btn-secondary btn-outline w-full md:w-auto justify-center" id="cv-viewer-btn" title="Abrir y descargar CV">
+                    <i class="fas fa-file" aria-hidden="true"></i>
+                    <span data-es="Ver Currículum" data-en="View Resume">Ver Currículum</span>
+                </button>
+            </div>
+            <div class="hero-stats flex flex-wrap gap-[30px] md:gap-[50px] mt-[60px] justify-center lg:justify-start animate-[fadeInUp_0.8s_ease-out_0.6s_backwards]">
+                <div class="stat flex flex-col gap-2 relative pl-5 before:absolute before:left-0 before:top-2 before:w-[3px] before:h-[24px] before:bg-accent-cyan before:rounded-[2px]">
+                    <span class="stat-number text-[2.2rem] font-bold leading-none">5+</span>
+                    <span class="stat-label text-text-muted text-[0.95rem] tracking-[1px] uppercase font-bold" data-es="Proyectos" data-en="Projects">Proyectos</span>
+                </div>
+                <div class="stat flex flex-col gap-2 relative pl-5 before:absolute before:left-0 before:top-2 before:w-[3px] before:h-[24px] before:bg-accent-cyan before:rounded-[2px]">
+                    <span class="stat-number text-[2.2rem] font-bold leading-none">2+</span>
+                    <span class="stat-label text-text-muted text-[0.95rem] tracking-[1px] uppercase font-bold" data-es="Años" data-en="Years">Años</span>
+                </div>
+                <div class="stat flex flex-col gap-2 relative pl-5 before:absolute before:left-0 before:top-2 before:w-[3px] before:h-[24px] before:bg-accent-cyan before:rounded-[2px]">
+                    <span class="stat-number text-[2.2rem] font-bold leading-none">∞</span>
+                    <span class="stat-label text-text-muted text-[0.95rem] tracking-[1px] uppercase font-bold" data-es="Pasión" data-en="Passion">Pasión</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-visual relative animate-[slideInRight_0.8s_ease-out]">
+            <div class="profile-image-wrapper relative flex justify-center items-center h-[550px]">
+                <div class="profile-image-frame relative w-[200px] h-[280px] md:w-[320px] md:h-[420px] rounded-[20px] overflow-hidden shadow-[0_40px_80px_rgba(6,182,212,0.15)] border-2 border-cyan-400/20 z-10 group">
+                    <img src="/fotocarapixeldario.jpg" alt="Foto de perfil de Darío Martínez, desarrollador web" class="profile-image w-full h-full object-cover object-center block filter-none transition-all duration-300 group-hover:brightness-110" loading="lazy" decoding="async">
+                    <div class="frame-border absolute inset-0 border-2 border-accent-cyan rounded-[20px] opacity-30 pointer-events-none"></div>
+                    <div class="frame-shine absolute top-0 -left-full w-full h-full bg-linear-to-r from-transparent via-white/10 to-transparent animate-[shine_3s_infinite]"></div>
+                </div>
+                <a href="#contact" class="profile-badge absolute right-auto left-auto  bg-bg-dark/95 border border-accent-cyan px-5 py-3 rounded-[50px] flex items-center gap-2 font-semibold text-accent-cyan backdrop-blur-[10px] z-11 animate-[slideUp_0.8s_ease-out_0.3s]" aria-label="Disponible para proyectos — ir a contacto">
+                    <span class="pulse-dot w-2 h-2 bg-accent-cyan rounded-full"></span>
+                    <span data-es="Disponible" data-en="Available">Disponible</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

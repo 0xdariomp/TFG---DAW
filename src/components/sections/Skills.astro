@@ -1,0 +1,40 @@
+---
+// Skills.astro
+const skills = [
+    { name: "HTML5", descEs: "Semántica y estándares", descEn: "Semantics & Standards", iconClass: "html", icon: "fab fa-html5" },
+    { name: "CSS3", descEs: "Animaciones y diseño", descEn: "Animations & Design", iconClass: "css", icon: "fab fa-css3-alt" },
+    { name: "JavaScript", descEs: "Interactividad avanzada", descEn: "Advanced Interactivity", iconClass: "js", icon: "fab fa-js-square" },
+    { name: "PHP", descEs: "Backend robusto", descEn: "Robust Backend", iconClass: "php", icon: "fab fa-php" },
+    { name: "n8n", descEs: "Automatización de flujos", descEn: "Workflow Automation", iconClass: "n8n", icon: "fas fa-cogs" },
+    { name: "MySQL", descEs: "Bases de datos", descEn: "Databases", iconClass: "mysql", icon: "fas fa-database" },
+    { name: "Supabase", descEs: "Base de datos en tiempo real", descEn: "Real-time database", iconClass: "supabase", icon: "fas fa-bolt" },
+    { name: "Looker Studio", descEs: "Dashboards y estudios de mercado", descEn: "Dashboards & market studies", iconClass: "looker", icon: "fas fa-chart-bar" },
+    { name: "Git", descEs: "Control de versiones", descEn: "Version Control", iconClass: "git", icon: "fab fa-git-alt" },
+    { name: "REST API", descEs: "Arquitectura moderna", descEn: "Modern Architecture", iconClass: "rest", icon: "fas fa-plug" }
+];
+
+const carouselItems = [...skills, ...skills];
+---
+<section class="skills-carousel-section fade bg-transparent px-[20px] py-[50px] md:px-[60px] md:py-[60px] overflow-hidden border-y border-slate-400/10" id="skills">
+    <div class="section-header">
+        <h2 data-es="Stack Tecnológico" data-en="Tech Stack">Stack Tecnológico</h2>
+        <p data-es="Herramientas y tecnologías que domino" data-en="Tools and technologies I master">Herramientas y tecnologías que domino</p>
+    </div>
+    <div class="carousel-container relative overflow-visible mt-[50px]" style="-webkit-mask-image: linear-gradient(to right, transparent 0, black 90px, black calc(100% - 90px), transparent 100%); mask-image: linear-gradient(to right, transparent 0, black 90px, black calc(100% - 90px), transparent 100%);">
+        <div class="carousel-track flex gap-[30px] animate-[scroll_30s_linear_infinite] will-change-transform">
+            {carouselItems.map(skill => (
+                <div class="carousel-item flex-none w-[200px] min-w-[200px]">
+                    <div class="skill-card bg-linear-to-br from-bg-light/80 to-bg-lighter/60 border border-accent-cyan/20 p-[30px] rounded-[16px] text-center transition-all duration-300 cursor-none relative overflow-visible h-[220px] flex flex-col justify-center items-center z-10 group hover:border-accent-cyan hover:bg-accent-cyan/5 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(6,182,212,0.1)]">
+                        <div class={`skill-icon ${skill.iconClass} w-[70px] h-[70px] rounded-full flex items-center justify-center text-[2rem] mb-[20px] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[5deg]`}>
+                            <i class={skill.icon}></i>
+                        </div>
+                        <h4 class="m-[10px_0] text-[1.1rem] font-bold text-white">{skill.name}</h4>
+                        <p class="m-0 text-slate-400 text-[0.85rem]" data-es={skill.descEs} data-en={skill.descEn}>{skill.descEs}</p>
+                    </div>
+                </div>
+            ))}
+        </div>
+        <div class="carousel-gradient-left absolute top-0 left-0 w-[150px] h-full z-20 pointer-events-none bg-linear-to-r from-bg-dark to-transparent"></div>
+        <div class="carousel-gradient-right absolute top-0 right-0 w-[150px] h-full z-20 pointer-events-none bg-linear-to-l from-bg-dark to-transparent"></div>
+    </div>
+</section>

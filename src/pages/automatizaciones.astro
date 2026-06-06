@@ -1,0 +1,297 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Automatizaciones n8n | Darío Martínez"
+  description="Automatizaciones con n8n: Monitor de almacenamiento Plesk con alertas Slack/email y procesador de reseñas Angal con IA y Google Looker Studio."
+  lang="es"
+>
+
+<style>
+    .doc-wrap { max-width: 1100px; margin: 0 auto; padding: 60px 40px 120px; }
+
+    .doc-back {
+        display: inline-flex; align-items: center; gap: 10px;
+        color: var(--accent-cyan); text-decoration: none;
+        font-family: 'Space Mono', monospace; font-size: 0.85rem; letter-spacing: 1px;
+        transition: var(--transition); margin-bottom: 48px;
+    }
+    .doc-back:hover { transform: translateX(-5px); text-shadow: 0 0 20px rgba(6,182,212,.6); }
+
+    /* PAGE HERO */
+    .page-hero { text-align: center; margin-bottom: 80px; animation: slideInDown 0.7s ease-out; }
+    .page-cat {
+        display: inline-block; font-size: 0.72rem; font-weight: 700;
+        letter-spacing: 4px; text-transform: uppercase; color: var(--accent-cyan);
+        padding: 6px 18px; border: 1px solid rgba(6,182,212,.3); border-radius: 50px; margin-bottom: 22px;
+    }
+    .page-hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 16px; }
+    .page-hero p { color: var(--text-muted); font-size: 1rem; max-width: 560px; margin: 0 auto 30px; line-height: 1.8; }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    .chip { padding: 5px 14px; border-radius: 50px; font-size: 0.77rem; }
+    .chip-c { background: rgba(6,182,212,.07); border: 1px solid rgba(6,182,212,.2); color: var(--accent-cyan); }
+    .chip-g { background: rgba(34,197,94,.07); border: 1px solid rgba(34,197,94,.2); color: #22c55e; }
+    .chip-o { background: rgba(249,115,22,.07); border: 1px solid rgba(249,115,22,.2); color: var(--accent-orange); }
+    .chip-b { background: rgba(59,130,246,.07); border: 1px solid rgba(59,130,246,.2); color: var(--accent-blue); }
+    .chip-p { background: rgba(168,85,247,.07); border: 1px solid rgba(168,85,247,.2); color: var(--accent-purple); }
+
+    /* AUTO CARD */
+    .auto-card {
+        background: var(--bg-light); border: 1px solid var(--border-color);
+        border-radius: 20px; overflow: hidden; margin-bottom: 60px;
+        transition: var(--transition);
+    }
+    .auto-card:hover { border-color: var(--border-color-bright); box-shadow: 0 20px 60px rgba(6,182,212,.06); }
+
+    .auto-header {
+        display: flex; align-items: center; gap: 22px;
+        padding: 34px 40px 26px; border-bottom: 1px solid var(--border-color);
+    }
+    .auto-badge {
+        width: 54px; height: 54px; border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-family: 'VT323', monospace; font-size: 1.6rem; color: var(--bg-dark); flex-shrink: 0;
+    }
+    .badge-cyan { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue)); }
+    .badge-purple { background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); }
+    .auto-header h2 { font-size: 1.4rem; margin-bottom: 6px; }
+    .auto-header p { color: var(--text-muted); font-size: 0.87rem; margin: 0; line-height: 1.5; }
+
+    .auto-body { padding: 36px 40px; }
+
+    /* Problem / Solution */
+    .ps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 32px; }
+    .ps-box { padding: 26px 22px; border-radius: 12px; border: 1px solid; }
+    .ps-prob { background: rgba(239,68,68,.04); border-color: rgba(239,68,68,.2); }
+    .ps-sol  { background: rgba(34,197,94,.04);  border-color: rgba(34,197,94,.2); }
+    .ps-box .ps-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .ps-prob .ps-title { color: #ef4444; }
+    .ps-sol  .ps-title { color: #22c55e; }
+    .ps-box p { font-size: 0.87rem; color: var(--text-muted); line-height: 1.75; margin: 0; }
+
+    /* Workflow */
+    .wf-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
+    .wf-flow { display: flex; align-items: center; gap: 0; overflow-x: auto; padding-bottom: 8px; margin-bottom: 28px; scrollbar-width: thin; }
+    .wf-node {
+        flex: 0 0 auto; min-width: 106px;
+        background: var(--bg-lighter); border: 1px solid var(--border-color);
+        border-radius: 10px; padding: 14px 14px; text-align: center; transition: var(--transition);
+    }
+    .wf-node:hover { border-color: var(--accent-cyan); box-shadow: 0 0 18px rgba(6,182,212,.12); }
+    .wf-node i { font-size: 1.25rem; color: var(--accent-cyan); display: block; margin-bottom: 6px; }
+    .wf-node .nn { font-size: 0.72rem; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; }
+    .wf-node .nd { font-size: 0.63rem; color: var(--text-muted); line-height: 1.3; }
+    .wf-arr { padding: 0 8px; color: var(--accent-cyan); opacity: .4; font-size: 0.85rem; flex: 0 0 auto; }
+
+    /* Highlight box */
+    .highlight-box {
+        border-radius: 12px; padding: 20px 22px; margin-bottom: 24px; border: 1px solid;
+    }
+    .hl-blue { background: rgba(59,130,246,.05); border-color: rgba(59,130,246,.2); }
+    .hl-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .hl-blue .hl-title { color: var(--accent-blue); }
+    .hl-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; }
+    .hl-item { font-size: 0.82rem; color: var(--text-muted); }
+
+    /* IMPACT */
+    .section-div {
+        display: flex; align-items: center; gap: 20px; margin: 80px 0 50px;
+    }
+    .section-div::before, .section-div::after {
+        content: ''; flex: 1; height: 1px;
+        background: linear-gradient(90deg, transparent, var(--border-color-bright), transparent);
+    }
+    .section-div span { font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); white-space: nowrap; }
+
+    .impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 70px; }
+    .impact-card {
+        background: var(--bg-light); border: 1px solid var(--border-color);
+        border-radius: 12px; padding: 28px 18px; text-align: center; transition: var(--transition);
+    }
+    .impact-card:hover { border-color: var(--accent-cyan); background: rgba(6,182,212,.04); transform: translateY(-8px); box-shadow: 0 14px 35px rgba(6,182,212,.15); }
+    .impact-num { font-family: 'VT323', monospace; font-size: 2.3rem; color: var(--accent-cyan); margin-bottom: 8px; letter-spacing: 2px; }
+    .impact-lbl { font-size: 0.73rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; line-height: 1.4; }
+
+    /* CTA */
+    .cta-box {
+        text-align: center; padding: 56px 40px;
+        background: linear-gradient(135deg, rgba(6,182,212,.07), rgba(168,85,247,.07));
+        border: 1px solid var(--border-color-bright); border-radius: 16px;
+    }
+    .cta-box h2 { margin-bottom: 14px; font-size: 1.7rem; }
+    .cta-box p { color: var(--text-muted); margin-bottom: 30px; }
+    .btn-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .sibling-link {
+        display: inline-flex; align-items: center; gap: 8px;
+        margin-top: 40px; padding: 12px 24px;
+        border: 1px solid var(--border-color); border-radius: 50px;
+        color: var(--text-muted); font-size: 0.8rem; text-decoration: none;
+        transition: var(--transition);
+    }
+    .sibling-link:hover { border-color: var(--accent-purple); color: var(--accent-purple); }
+
+    @media(max-width:1024px) { .auto-header { padding: 26px 24px 20px; } .auto-body { padding: 26px 24px; } }
+    @media(max-width:768px) { .doc-wrap{padding:40px 20px 80px;} .ps-grid{grid-template-columns:1fr;} .auto-header{flex-direction:column;align-items:flex-start;} .impact-grid{grid-template-columns:repeat(2,1fr);} }
+</style>
+
+
+<div class="doc-wrap fade">
+    <a href="/" class="doc-back"><i class="fas fa-arrow-left"></i><span data-es="Volver al Portfolio" data-en="Back to Portfolio">Volver al Portfolio</span></a>
+
+    <div class="page-hero">
+        <div class="page-cat" data-es="Automatizaciones · n8n" data-en="Automations · n8n">Automatizaciones · n8n</div>
+        <h1 data-es="Flujos Automáticos con n8n" data-en="Automated Workflows with n8n">Flujos Automáticos con n8n</h1>
+        <p data-es="Dos automatizaciones construidas con n8n que resolvieron problemas operativos reales en producción: monitorización de almacenamiento con alertas automáticas y procesamiento inteligente de reseñas con IA." data-en="Two automations built with n8n that solved real operational problems in production: storage monitoring with automatic alerts and intelligent review processing with AI.">
+            Automatizaciones de producción que eliminaron tareas manuales, redujeron errores y aportaron inteligencia de negocio real.
+        </p>
+        <div class="chip-row">
+            <span class="chip chip-c">n8n</span>
+            <span class="chip chip-c">Plesk API</span>
+            <span class="chip chip-o">Slack API</span>
+            <span class="chip chip-c">SMTP</span>
+            <span class="chip chip-p">IA / LLM</span>
+            <span class="chip chip-g">MySQL</span>
+            <span class="chip chip-b">Google Looker Studio</span>
+        </div>
+    </div>
+
+
+    <!-- ══ AUTOMATIZACIÓN 01: PLESK STORAGE ══ -->
+    <div class="auto-card">
+        <div class="auto-header">
+            <div class="auto-badge badge-cyan">01</div>
+            <div>
+                <h2 data-es="Monitor de Almacenamiento Plesk" data-en="Plesk Storage Monitor">Monitor de Almacenamiento Plesk</h2>
+                <p data-es="Detección proactiva de dominios con almacenamiento excedido · Alerta Slack al equipo · Email personalizado al cliente · Página de planes de ampliación" data-en="Proactive detection of domains exceeding storage · Slack alert to team · Personalized email to client · Upgrade plans page">
+                    Detección proactiva · Alerta Slack al equipo · Email al cliente · Página de planes de ampliación
+                </p>
+            </div>
+        </div>
+        <div class="auto-body">
+            <div class="ps-grid">
+                <div class="ps-box ps-prob">
+                    <div class="ps-title"><i class="fas fa-exclamation-triangle"></i><span data-es="El Problema" data-en="The Problem">El Problema</span></div>
+                    <p data-es="Detectar manualmente qué dominios habían superado el límite de almacenamiento de su plan consumía horas del equipo técnico cada semana. Sin notificación proactiva, los clientes solo lo descubrían cuando su servicio fallaba, generando incidencias urgentes y mala experiencia de usuario." data-en="Manually detecting which domains had exceeded their plan storage limit consumed hours of the technical team every week. Without proactive notification, clients only found out when their service failed, generating urgent incidents and bad user experience.">
+                        Detectar manualmente dominios con almacenamiento excedido consumía horas técnicas. Los clientes solo lo descubrían cuando su servicio fallaba.
+                    </p>
+                </div>
+                <div class="ps-box ps-sol">
+                    <div class="ps-title"><i class="fas fa-check-circle"></i><span data-es="La Solución" data-en="The Solution">La Solución</span></div>
+                    <p data-es="Flujo n8n programado que se conecta a la API de Plesk, analiza el uso de almacenamiento de todos los dominios, filtra los que superan su plan, extrae el email del administrador de cada dominio, notifica al equipo interno por Slack y envía un email personalizado a cada cliente afectado, además de actualizar automáticamente una página con los planes de ampliación disponibles." data-en="Scheduled n8n flow that connects to the Plesk API, analyzes storage usage for all domains, filters those exceeding their plan, extracts each domain's admin email, notifies the internal team via Slack and sends a personalized email to each affected client, while also automatically updating a page with available upgrade plans.">
+                        Flujo n8n programado: consulta Plesk API → filtra excesos → Slack al equipo → email personalizado al cliente → actualiza página de planes.
+                    </p>
+                </div>
+            </div>
+
+            <div class="wf-label" data-es="FLUJO PASO A PASO" data-en="STEP BY STEP FLOW">FLUJO PASO A PASO</div>
+            <div class="wf-flow">
+                <div class="wf-node"><i class="fas fa-clock"></i><div class="nn" data-es="Trigger" data-en="Trigger">Trigger</div><div class="nd" data-es="Programado diariamente" data-en="Daily schedule">Programado diariamente</div></div>
+                <div class="wf-arr"><i class="fas fa-arrow-right"></i></div>
+                <div class="wf-node"><i class="fas fa-server"></i><div class="nn">Plesk API</div><div class="nd" data-es="Lista todos los dominios" data-en="Lists all domains">Lista todos los dominios</div></div>
+                <div class="wf-arr"><i class="fas fa-arrow-right"></i></div>
+                <div class="wf-node"><i class="fas fa-filter"></i><div class="nn" data-es="Filtrado" data-en="Filter">Filtrado</div><div class="nd" data-es="Detecta exceso de plan" data-en="Detects plan excess">Detecta exceso de plan</div></div>
+                <div class="wf-arr"><i class="fas fa-arrow-right"></i></div>
+                <div class="wf-node"><i class="fab fa-slack"></i><div class="nn">Slack</div><div class="nd" data-es="Alerta interna al equipo" data-en="Internal team alert">Alerta al equipo</div></div>
+                <div class="wf-arr"><i class="fas fa-arrow-right"></i></div>
+                <div class="wf-node"><i class="fas fa-envelope"></i><div class="nn">Email</div><div class="nd" data-es="Email personalizado al cliente" data-en="Personalized email to client">Email al cliente</div></div>
+                <div class="wf-arr"><i class="fas fa-arrow-right"></i></div>
+                <div class="wf-node"><i class="fas fa-file-alt"></i><div class="nn" data-es="Página Planes" data-en="Plans Page">Página Planes</div><div class="nd" data-es="Actualiza opciones de ampliación" data-en="Updates upgrade options">Actualiza planes</div></div>
+            </div>
+
+            <div class="chip-row" style="justify-content:flex-start">
+                <span class="chip chip-c">n8n</span>
+                <span class="chip chip-c">Plesk API</span>
+                <span class="chip chip-o">Slack API</span>
+                <span class="chip chip-c">SMTP / Email</span>
+                <span class="chip chip-g">Cron Schedule</span>
+                <span class="chip chip-o">HTTP Request</span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ══ AUTOMATIZACIÓN 02: ANGAL REVIEWS ══ -->
+    <div class="auto-card">
+        <div class="auto-header">
+            <div class="auto-badge badge-purple">02</div>
+            <div>
+                <h2 data-es="Procesador de Reseñas Angal" data-en="Angal Reviews Processor">Procesador de Reseñas Angal</h2>
+                <p data-es="Recogida automatizada de reseñas de grupos Angal en España · Procesamiento con IA · Inserción en MySQL · Dashboard en Google Looker Studio" data-en="Automated collection of reviews from Angal groups in Spain · AI processing · MySQL insertion · Google Looker Studio dashboard">
+                    Recogida de reseñas Angal España · Clasificación con IA · MySQL · Google Looker Studio
+                </p>
+            </div>
+        </div>
+        <div class="auto-body">
+            <div class="ps-grid">
+                <div class="ps-box ps-prob">
+                    <div class="ps-title"><i class="fas fa-exclamation-triangle"></i><span data-es="El Problema" data-en="The Problem">El Problema</span></div>
+                    <p data-es="Angal España tiene múltiples grupos distribuidos por todo el país. Sus reseñas estaban dispersas, en texto libre y sin ningún formato analizable. Extraer información útil — sentimiento, temas recurrentes, tendencias por región — de cientos de reseñas era completamente inviable de forma manual." data-en="Angal Spain has multiple groups distributed throughout the country. Their reviews were scattered, in free text and without any analyzable format. Extracting useful information — sentiment, recurring topics, regional trends — from hundreds of reviews was completely unfeasible manually.">
+                        Cientos de reseñas dispersas en múltiples grupos de Angal España, en texto libre y sin herramienta para extraer valor analítico de ellas.
+                    </p>
+                </div>
+                <div class="ps-box ps-sol">
+                    <div class="ps-title"><i class="fas fa-check-circle"></i><span data-es="La Solución" data-en="The Solution">La Solución</span></div>
+                    <p data-es="Pipeline completo en n8n: recopilación automática de reseñas de todos los grupos Angal en España, procesamiento con IA para extraer sentimiento, puntuación y categoría de cada reseña, inserción estructurada en una base de datos MySQL, y visualización dinámica con gráficos de tendencias y tablas filtradas en Google Looker Studio." data-en="Complete n8n pipeline: automatic collection of reviews from all Angal groups in Spain, AI processing to extract sentiment, score and category from each review, structured insertion into a MySQL database, and dynamic visualization with trend charts and filtered tables in Google Looker Studio.">
+                        Pipeline n8n: recoge reseñas de todos los grupos → IA extrae sentimiento y categorías → inserta en MySQL → Google Looker Studio visualiza con gráficos y tablas.
+                    </p>
+                </div>
+            </div>
+
+            <div class="wf-label" data-es="PIPELINE DE DATOS" data-en="DATA PIPELINE">PIPELINE DE DATOS</div>
+            <div class="wf-flow">
+                <div class="wf-node"><i class="fas fa-star"></i><div class="nn" data-es="Recogida" data-en="Collection">Recogida</div><div class="nd" data-es="Grupos Angal España" data-en="Angal Spain groups">Grupos Angal España</div></div>
+                <div class="wf-arr"><i class="fas fa-arrow-right"></i></div>
+                <div class="wf-node"><i class="fas fa-brain"></i><div class="nn">IA / LLM</div><div class="nd" data-es="Sentimiento + categoría" data-en="Sentiment + category">Sentimiento + categoría</div></div>
+                <div class="wf-arr"><i class="fas fa-arrow-right"></i></div>
+                <div class="wf-node"><i class="fas fa-table"></i><div class="nn" data-es="Estructurar" data-en="Structure">Estructurar</div><div class="nd">JSON normalizado</div></div>
+                <div class="wf-arr"><i class="fas fa-arrow-right"></i></div>
+                <div class="wf-node"><i class="fas fa-database"></i><div class="nn">MySQL</div><div class="nd" data-es="Inserción en BBDD" data-en="DB insertion">Inserción en BBDD</div></div>
+                <div class="wf-arr"><i class="fas fa-arrow-right"></i></div>
+                <div class="wf-node" style="border-color:rgba(59,130,246,.3)"><i class="fas fa-chart-bar" style="color:var(--accent-blue)"></i><div class="nn">Looker Studio</div><div class="nd" data-es="Gráficos y tablas" data-en="Charts &amp; tables">Gráficos y tablas</div></div>
+            </div>
+
+            <div class="highlight-box hl-blue">
+                <div class="hl-title"><i class="fas fa-chart-pie"></i><span data-es="Visualizaciones en Google Looker Studio" data-en="Google Looker Studio Visualizations">Visualizaciones en Google Looker Studio</span></div>
+                <div class="hl-items">
+                    <div class="hl-item">📊 <span data-es="Valoración media por grupo y ciudad" data-en="Average rating by group and city">Valoración media por grupo y ciudad</span></div>
+                    <div class="hl-item">📈 <span data-es="Evolución del sentimiento en el tiempo" data-en="Sentiment evolution over time">Evolución del sentimiento en el tiempo</span></div>
+                    <div class="hl-item">🗂️ <span data-es="Tabla detallada con filtros por categoría" data-en="Detailed table with category filters">Tabla detallada con filtros</span></div>
+                    <div class="hl-item">🔍 <span data-es="Top temas recurrentes detectados por IA" data-en="Top recurring topics detected by AI">Top temas recurrentes por IA</span></div>
+                </div>
+            </div>
+
+            <div class="chip-row" style="justify-content:flex-start">
+                <span class="chip chip-c">n8n</span>
+                <span class="chip chip-p">IA / LLM</span>
+                <span class="chip chip-g">MySQL</span>
+                <span class="chip chip-b">Google Looker Studio</span>
+                <span class="chip chip-c">JSON</span>
+                <span class="chip chip-o">Web Scraping</span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- IMPACT -->
+    <div class="section-div"><span data-es="Resultados" data-en="Results">Resultados</span></div>
+    <div class="impact-grid">
+        <div class="impact-card"><div class="impact-num">2</div><div class="impact-lbl" data-es="Flujos n8n en producción" data-en="n8n flows in production">Flujos n8n<br>en producción</div></div>
+        <div class="impact-card"><div class="impact-num">8h+</div><div class="impact-lbl" data-es="Ahorradas por semana" data-en="Saved per week">Ahorradas<br>por semana</div></div>
+        <div class="impact-card"><div class="impact-num">0</div><div class="impact-lbl" data-es="Intervención manual" data-en="Manual intervention">Intervención<br>manual</div></div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-box">
+        <h2 data-es="¿Tienes un proceso manual que automatizar?" data-en="Have a manual process to automate?">¿Tienes un proceso manual que automatizar?</h2>
+        <p data-es="Si se puede describir, probablemente se puede automatizar. Hablemos." data-en="If it can be described, it can probably be automated. Let's talk.">Si se puede describir, probablemente se puede automatizar. Hablemos.</p>
+        <div class="btn-row">
+            <a href="/#contact" class="btn btn-primary btn-glow"><i class="fas fa-envelope"></i><span data-es="Contactar" data-en="Contact">Contactar</span></a>
+            <a href="/" class="btn btn-secondary btn-outline"><i class="fas fa-home"></i><span data-es="Inicio" data-en="Home">Inicio</span></a>
+        </div>
+        <a href="/chatbot" class="sibling-link"><i class="fas fa-robot"></i><span data-es="Ver también: ChatBot IA Empresarial →" data-en="See also: Enterprise AI ChatBot →">Ver también: ChatBot IA Empresarial →</span></a>
+    </div>
+</div>
+
+
+</Layout>

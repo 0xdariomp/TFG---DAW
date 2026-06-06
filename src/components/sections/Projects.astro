@@ -1,0 +1,146 @@
+---
+// Projects.astro
+---
+<section class="projects-section fade px-[20px] py-[50px] md:px-[60px] md:py-[100px] max-w-[1400px] mx-auto" id="projects">
+    <div class="section-header">
+        <h2 data-es="Proyectos Destacados" data-en="Featured Projects">Proyectos Destacados</h2>
+        <p data-es="Trabajos que reflejan mi pasión y experiencia" data-en="Works that reflect my passion and expertise">Trabajos que reflejan mi pasión y experiencia</p>
+    </div>
+
+    <div class="projects-grid grid grid-cols-1 lg:grid-cols-2 gap-[40px]">
+
+        <!-- PROYECTO 1: PELUQUERÍA VIP GRANADA -->
+        <article class="project-card fade-card bg-bg-light border border-slate-400/10 rounded-[16px] overflow-hidden transition-all duration-300 cursor-none relative group hover:border-accent-cyan hover:-translate-y-2.5 hover:shadow-[0_30px_60px_rgba(6,182,212,0.2)] before:absolute before:top-0 before:left-0 before:w-full before:h-[3px] before:bg-linear-to-r before:from-accent-cyan before:to-[#8b5cf6] before:scale-x-0 before:origin-left before:transition-transform before:duration-300 hover:before:scale-x-100 before:z-10">
+            <div class="project-image-wrapper relative w-full h-[250px] lg:h-[300px] overflow-hidden bg-linear-to-br from-accent-cyan/5 to-accent-purple/5">
+                <img src="/foto-corte2.jpeg" alt="Barbería VIP Granada" class="project-real-img w-full h-full object-cover object-top opacity-50 mix-blend-screen transition-all duration-500 filter grayscale-20 sepia-10 hue-rotate-[-5deg] group-hover:opacity-35 group-hover:scale-105">
+                <div class="project-badges absolute top-[20px] left-[20px] flex gap-[10px] z-15">
+                    <span class="project-badge-live bg-bg-dark/90 border border-accent-cyan/50 text-accent-cyan text-[0.7rem] px-[10px] py-[4px] rounded-[50px] font-bold tracking-[1px] flex items-center gap-[5px] backdrop-blur-[5px] uppercase shadow-[0_0_10px_rgba(6,182,212,0.15)]" data-es="Gestión de Citas" data-en="Booking System">Gestión de Citas</span>
+                </div>
+                <div class="project-overlay absolute inset-0 bg-accent-cyan/10 backdrop-blur-[5px] flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-15">
+                    <a href="/peluqueria" class="project-link py-[12px] px-[24px] bg-accent-cyan text-bg-dark no-underline rounded-[8px] font-bold transition-all duration-300 hover:bg-[#00d4e8] hover:scale-105 cursor-none" data-es="Ver Proyecto" data-en="View Project">Ver Proyecto</a>
+                </div>
+            </div>
+            <div class="project-content p-[30px]">
+                <span class="project-tag block text-accent-cyan text-[0.8rem] font-bold uppercase tracking-[1px] mb-[15px]">Barbería · Full Stack</span>
+                <h3 class="text-[1.6rem] mb-[15px]" data-es="Peluquería VIP Granada" data-en="VIP Granada Barbershop">Peluquería VIP Granada</h3>
+                <p class="text-slate-400 leading-[1.6] text-[0.95rem] m-0" data-es="Web premium para caballeros con reserva online, selección de corte, barba y cejas. Mapa integrado, diseño responsive y panel de accesibilidad completo." data-en="Premium website for gentlemen with online booking, haircut, beard and eyebrow selection. Integrated map, responsive design and full accessibility panel.">
+                    Web premium con reserva online, selección de servicios, mapa integrado y accesibilidad.
+                </p>
+                <div class="project-tech flex gap-[10px] mt-[25px] flex-wrap">
+                    <span class="font-mono text-[0.75rem] text-slate-500 bg-slate-500/10 px-[10px] py-[4px] rounded-[4px]">HTML5</span>
+                    <span class="font-mono text-[0.75rem] text-slate-500 bg-slate-500/10 px-[10px] py-[4px] rounded-[4px]">CSS3</span>
+                    <span class="font-mono text-[0.75rem] text-slate-500 bg-slate-500/10 px-[10px] py-[4px] rounded-[4px]">JavaScript</span>
+                    <span class="font-mono text-[0.75rem] text-slate-500 bg-slate-500/10 px-[10px] py-[4px] rounded-[4px]">LocalStorage</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- PROYECTO 2: CHATBOT IA -->
+        <article class="project-card fade-card project-featured bg-bg-light border border-accent-cyan/30 shadow-[0_0_30px_rgba(6,182,212,0.08)] rounded-[16px] overflow-hidden transition-all duration-300 cursor-none relative group hover:border-accent-cyan hover:-translate-y-2.5 hover:shadow-[0_30px_60px_rgba(6,182,212,0.2)] before:absolute before:top-0 before:left-0 before:w-full before:h-[3px] before:bg-linear-to-r before:from-accent-cyan before:to-[#8b5cf6] before:scale-x-0 before:origin-left before:transition-transform before:duration-300 hover:before:scale-x-100 before:z-10 after:content-['★_DESTACADO'] after:absolute after:top-[14px] after:right-[-35px] after:bg-accent-cyan after:text-bg-dark after:text-[0.6rem] after:font-bold after:py-[4px] after:px-[30px] after:rotate-45 after:shadow-[0_0_10px_rgba(6,182,212,0.5)] after:z-20 hidden md:block">
+            <div class="project-image-wrapper relative w-full h-[250px] lg:h-[300px] overflow-hidden bg-linear-to-br from-accent-cyan/5 to-accent-purple/5">
+                <div class="proj-mockup-chat absolute inset-0 flex flex-col justify-center gap-[8px] p-[22px_20px]">
+                    <div class="pmsg bot max-w-[76%] p-[8px_12px] rounded-[10px] text-[0.7rem] font-mono bg-[#1e293b]/70 text-slate-300 border border-slate-400/20 self-start shadow-[0_4px_10px_rgba(0,0,0,0.2)]"><span class="pmsg-dot inline-block w-[6px] h-[6px] bg-accent-cyan rounded-full mr-[6px] shadow-[0_0_5px_#06b6d4]"></span><span data-es="Hola, ¿en qué puedo ayudarte?" data-en="Hi, how can I help you?">Hola, ¿en qué puedo ayudarte?</span></div>
+                    <div class="pmsg user max-w-[76%] p-[8px_12px] rounded-[10px] text-[0.7rem] font-mono bg-linear-to-r from-accent-cyan/20 to-[#8b5cf6]/20 text-accent-cyan border border-accent-cyan/30 self-end text-right"><span data-es="Necesito información sobre precios." data-en="I need pricing information.">Necesito información sobre precios.</span></div>
+                    <div class="pmsg bot max-w-[76%] p-[8px_12px] rounded-[10px] text-[0.7rem] font-mono bg-[#1e293b]/70 text-slate-300 border border-slate-400/20 self-start shadow-[0_4px_10px_rgba(0,0,0,0.2)]"><span class="pmsg-dot inline-block w-[6px] h-[6px] bg-accent-cyan rounded-full mr-[6px] shadow-[0_0_5px_#06b6d4]"></span><span data-es="Claro, te lo explico ahora mismo..." data-en="Sure, let me explain right now...">Claro, te lo explico ahora mismo...</span></div>
+                </div>
+                <div class="project-badges absolute top-[20px] left-[20px] flex gap-[10px] z-15">
+                    <span class="project-badge-live bg-bg-dark/90 border border-accent-cyan/50 text-accent-cyan text-[0.7rem] px-[10px] py-[4px] rounded-[50px] font-bold tracking-[1px] flex items-center gap-[5px] backdrop-blur-[5px] uppercase shadow-[0_0_10px_rgba(6,182,212,0.15)]">● LIVE</span>
+                </div>
+                <div class="project-overlay project-overlay-duo absolute inset-0 bg-accent-cyan/10 backdrop-blur-[5px] flex flex-col gap-[12px] items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-15">
+                    <a href="/chatbot" class="project-link py-[12px] px-[24px] bg-accent-cyan text-bg-dark no-underline rounded-[8px] font-bold transition-all duration-300 hover:bg-[#00d4e8] hover:scale-105 cursor-none" data-es="Ver Documentación" data-en="View Docs">Ver Documentación</a>
+                    <a href="https://close.marketing/prueba%20Clo" target="_blank" rel="noopener" class="project-link project-link-secondary py-[12px] px-[24px] bg-transparent text-accent-cyan border-2 border-accent-cyan no-underline rounded-[8px] font-bold transition-all duration-300 hover:bg-accent-cyan/15 hover:scale-105 cursor-none" data-es="Demo en vivo" data-en="Live Demo">Demo en vivo</a>
+                </div>
+            </div>
+            <div class="project-content p-[30px]">
+                <span class="project-tag project-tag-live block text-[#f59e0b] text-[0.8rem] font-bold uppercase tracking-[1px] mb-[15px]">IA · Odoo · Live</span>
+                <h3 class="text-[1.6rem] mb-[15px]" data-es="ChatBot IA Empresarial" data-en="Enterprise AI ChatBot">ChatBot IA Empresarial</h3>
+                <p class="text-slate-400 leading-[1.6] text-[0.95rem] m-0" data-es="Asistente IA en producción para Close Marketing integrado con Odoo Discuss. NLP, canales automáticos y memoria persistente entre sesiones." data-en="AI assistant in production for Close Marketing integrated with Odoo Discuss. NLP, automatic channels and persistent memory between sessions.">
+                    Asistente IA en producción para Close Marketing con Odoo Discuss. NLP, canales automáticos y memoria persistente.
+                </p>
+                <div class="project-tech flex gap-[10px] mt-[25px] flex-wrap">
+                    <span class="font-mono text-[0.75rem] text-slate-500 bg-slate-500/10 px-[10px] py-[4px] rounded-[4px]">JavaScript</span>
+                    <span class="font-mono text-[0.75rem] text-slate-500 bg-slate-500/10 px-[10px] py-[4px] rounded-[4px]">IA / NLP</span>
+                    <span class="font-mono text-[0.75rem] text-slate-500 bg-slate-500/10 px-[10px] py-[4px] rounded-[4px]">Odoo API</span>
+                    <span class="font-mono text-[0.75rem] text-slate-500 bg-slate-500/10 px-[10px] py-[4px] rounded-[4px]">REST API</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- PROYECTO 3: AUTOMATIZACIONES n8n -->
+        <article class="project-card fade-card bg-bg-light border border-slate-400/10 rounded-[16px] overflow-hidden transition-all duration-300 cursor-none relative group hover:border-accent-cyan hover:-translate-y-2.5 hover:shadow-[0_30px_60px_rgba(6,182,212,0.2)] before:absolute before:top-0 before:left-0 before:w-full before:h-[3px] before:bg-linear-to-r before:from-accent-cyan before:to-[#8b5cf6] before:scale-x-0 before:origin-left before:transition-transform before:duration-300 hover:before:scale-x-100 before:z-10">
+            <div class="project-image-wrapper relative w-full h-[250px] lg:h-[300px] overflow-hidden bg-linear-to-br from-accent-cyan/5 to-accent-purple/5">
+                <div class="proj-mockup-n8n absolute inset-0 flex flex-col justify-center gap-[14px] p-[20px_16px]">
+                    <div class="pmn-row flex items-center gap-[6px]">
+                        <div class="pmn-node flex flex-col items-center gap-[4px] bg-[#0f1428]/80 border border-slate-400/20 p-[6px_10px] rounded-[6px] text-[0.6rem] font-mono text-slate-300 shadow-[0_4px_10px_rgba(0,0,0,0.3)] transition-colors duration-300 group-hover:border-accent-cyan/25"><i class="fas fa-clock text-[1rem]"></i><span>Trigger</span></div>
+                        <div class="pmn-edge text-[0.7rem] text-slate-500/40 flex-1 text-center tracking-[1px]">──</div>
+                        <div class="pmn-node flex flex-col items-center gap-[4px] bg-[#0f1428]/80 border border-slate-400/20 p-[6px_10px] rounded-[6px] text-[0.6rem] font-mono text-slate-300 shadow-[0_4px_10px_rgba(0,0,0,0.3)] transition-colors duration-300 group-hover:border-accent-cyan/25"><i class="fas fa-server text-[1rem]"></i><span>Plesk</span></div>
+                        <div class="pmn-edge text-[0.7rem] text-slate-500/40 flex-1 text-center tracking-[1px]">──</div>
+                        <div class="pmn-node active flex flex-col items-center gap-[4px] bg-[#0f1428]/80 border border-accent-cyan/40 p-[6px_10px] rounded-[6px] text-[0.6rem] font-mono text-accent-cyan shadow-[0_0_15px_rgba(6,182,212,0.1)] transition-colors duration-300"><i class="fab fa-slack text-[1rem]"></i><span>Slack</span></div>
+                    </div>
+                    <div class="pmn-row flex items-center gap-[6px]">
+                        <div class="pmn-node flex flex-col items-center gap-[4px] bg-[#0f1428]/80 border border-slate-400/20 p-[6px_10px] rounded-[6px] text-[0.6rem] font-mono text-slate-300 shadow-[0_4px_10px_rgba(0,0,0,0.3)] transition-colors duration-300 group-hover:border-accent-cyan/25"><i class="fas fa-brain text-[1rem]"></i><span>IA</span></div>
+                        <div class="pmn-edge text-[0.7rem] text-slate-500/40 flex-1 text-center tracking-[1px]">──</div>
+                        <div class="pmn-node flex flex-col items-center gap-[4px] bg-[#0f1428]/80 border border-slate-400/20 p-[6px_10px] rounded-[6px] text-[0.6rem] font-mono text-slate-300 shadow-[0_4px_10px_rgba(0,0,0,0.3)] transition-colors duration-300 group-hover:border-accent-cyan/25"><i class="fas fa-database text-[1rem]"></i><span>MySQL</span></div>
+                        <div class="pmn-edge text-[0.7rem] text-slate-500/40 flex-1 text-center tracking-[1px]">──</div>
+                        <div class="pmn-node active flex flex-col items-center gap-[4px] bg-[#0f1428]/80 border border-accent-cyan/40 p-[6px_10px] rounded-[6px] text-[0.6rem] font-mono text-accent-cyan shadow-[0_0_15px_rgba(6,182,212,0.1)] transition-colors duration-300"><i class="fas fa-chart-bar text-[1rem]"></i><span>Looker</span></div>
+                    </div>
+                </div>
+                <div class="project-overlay absolute inset-0 bg-accent-cyan/10 backdrop-blur-[5px] flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-15">
+                    <a href="/automatizaciones" class="project-link py-[12px] px-[24px] bg-accent-cyan text-bg-dark no-underline rounded-[8px] font-bold transition-all duration-300 hover:bg-[#00d4e8] hover:scale-105 cursor-none" data-es="Ver Documentación" data-en="View Docs">Ver Documentación</a>
+                </div>
+            </div>
+            <div class="project-content p-[30px]">
+                <span class="project-tag block text-accent-cyan text-[0.8rem] font-bold uppercase tracking-[1px] mb-[15px]">n8n · IA · Data</span>
+                <h3 class="text-[1.6rem] mb-[15px]" data-es="Automatizaciones n8n" data-en="n8n Automations">Automatizaciones n8n</h3>
+                <p class="text-slate-400 leading-[1.6] text-[0.95rem] m-0" data-es="Monitor de almacenamiento Plesk con alertas Slack/email, y procesador de reseñas Angal con IA, MySQL y Google Looker Studio." data-en="Plesk storage monitor with Slack/email alerts, and Angal reviews processor with AI, MySQL and Google Looker Studio.">
+                    Monitor Plesk con alertas Slack/email · Procesador de reseñas con IA, MySQL y Google Looker Studio.
+                </p>
+                <div class="project-tech flex gap-[10px] mt-[25px] flex-wrap">
+                    <span class="font-mono text-[0.75rem] text-slate-500 bg-slate-500/10 px-[10px] py-[4px] rounded-[4px]">n8n</span>
+                    <span class="font-mono text-[0.75rem] text-slate-500 bg-slate-500/10 px-[10px] py-[4px] rounded-[4px]">Plesk API</span>
+                    <span class="font-mono text-[0.75rem] text-slate-500 bg-slate-500/10 px-[10px] py-[4px] rounded-[4px]">IA / LLM</span>
+                    <span class="font-mono text-[0.75rem] text-slate-500 bg-slate-500/10 px-[10px] py-[4px] rounded-[4px]">Looker Studio</span>
+                </div>
+            </div>
+        </article>
+
+    </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process-section fade px-[20px] py-[50px] md:px-[60px] md:py-[100px] max-w-[1400px] mx-auto" id="process">
+    <div class="section-header">
+        <h2 data-es="Cómo Trabajo" data-en="How I Work">Cómo Trabajo</h2>
+        <p data-es="De la idea al producto final, paso a paso" data-en="From idea to final product, step by step">De la idea al producto final, paso a paso</p>
+    </div>
+    <div class="process-steps flex flex-col gap-[30px] relative before:absolute before:left-[24px] before:top-0 before:bottom-0 before:w-[2px] before:bg-slate-400/10 md:before:left-[30px]">
+        <div class="process-step flex gap-[20px] md:gap-[40px] items-start relative">
+            <div class="step-num w-[48px] h-[48px] md:w-[60px] md:h-[60px] rounded-full bg-bg-light border-2 border-accent-cyan text-accent-cyan flex items-center justify-center font-mono font-bold text-[1.1rem] md:text-[1.3rem] shrink-0 z-10 shadow-[0_0_20px_rgba(6,182,212,0.2)]">01</div>
+            <div class="step-body bg-bg-light border border-slate-400/10 rounded-[16px] p-[25px] md:p-[30px] flex-1 transition-all duration-300 cursor-default hover:border-accent-cyan/40 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(6,182,212,0.1)]">
+                <h3 class="text-[1.3rem] mb-[10px]" data-es="Entender el problema" data-en="Understand the problem">Entender el problema</h3>
+                <p class="text-slate-400 leading-[1.6] m-0" data-es="Antes de escribir una sola línea, escucho. Qué necesita el usuario, qué espera el cliente, qué restricciones existen." data-en="Before writing a single line, I listen. What the user needs, what the client expects, what constraints exist.">Antes de escribir una sola línea, escucho. Qué necesita el usuario, qué espera el cliente, qué restricciones existen.</p>
+            </div>
+        </div>
+        <div class="process-step flex gap-[20px] md:gap-[40px] items-start relative">
+            <div class="step-num w-[48px] h-[48px] md:w-[60px] md:h-[60px] rounded-full bg-bg-light border-2 border-accent-cyan text-accent-cyan flex items-center justify-center font-mono font-bold text-[1.1rem] md:text-[1.3rem] shrink-0 z-10 shadow-[0_0_20px_rgba(6,182,212,0.2)]">02</div>
+            <div class="step-body bg-bg-light border border-slate-400/10 rounded-[16px] p-[25px] md:p-[30px] flex-1 transition-all duration-300 cursor-default hover:border-accent-cyan/40 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(6,182,212,0.1)]">
+                <h3 class="text-[1.3rem] mb-[10px]" data-es="Diseñar la interfaz" data-en="Design the interface">Diseñar la interfaz</h3>
+                <p class="text-slate-400 leading-[1.6] m-0" data-es="Estructura la información antes de añadir estilos. HTML semántico primero, diseño visual después — nunca al revés." data-en="Structure information before adding styles. Semantic HTML first, visual design after — never the other way around.">Estructura la información antes de añadir estilos. HTML semántico primero, diseño visual después — nunca al revés.</p>
+            </div>
+        </div>
+        <div class="process-step flex gap-[20px] md:gap-[40px] items-start relative">
+            <div class="step-num w-[48px] h-[48px] md:w-[60px] md:h-[60px] rounded-full bg-bg-light border-2 border-accent-cyan text-accent-cyan flex items-center justify-center font-mono font-bold text-[1.1rem] md:text-[1.3rem] shrink-0 z-10 shadow-[0_0_20px_rgba(6,182,212,0.2)]">03</div>
+            <div class="step-body bg-bg-light border border-slate-400/10 rounded-[16px] p-[25px] md:p-[30px] flex-1 transition-all duration-300 cursor-default hover:border-accent-cyan/40 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(6,182,212,0.1)]">
+                <h3 class="text-[1.3rem] mb-[10px]" data-es="Construir e integrar" data-en="Build and integrate">Construir e integrar</h3>
+                <p class="text-slate-400 leading-[1.6] m-0" data-es="Código limpio, componentes reutilizables y backend conectado. Si hay lógica que automatizar, se automatiza." data-en="Clean code, reusable components and connected backend. If there's logic to automate, it gets automated.">Código limpio, componentes reutilizables y backend conectado. Si hay lógica que automatizar, se automatiza.</p>
+            </div>
+        </div>
+        <div class="process-step flex gap-[20px] md:gap-[40px] items-start relative">
+            <div class="step-num w-[48px] h-[48px] md:w-[60px] md:h-[60px] rounded-full bg-bg-light border-2 border-accent-cyan text-accent-cyan flex items-center justify-center font-mono font-bold text-[1.1rem] md:text-[1.3rem] shrink-0 z-10 shadow-[0_0_20px_rgba(6,182,212,0.2)]">04</div>
+            <div class="step-body bg-bg-light border border-slate-400/10 rounded-[16px] p-[25px] md:p-[30px] flex-1 transition-all duration-300 cursor-default hover:border-accent-cyan/40 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(6,182,212,0.1)]">
+                <h3 class="text-[1.3rem] mb-[10px]" data-es="Pulir y entregar" data-en="Polish and deliver">Pulir y entregar</h3>
+                <p class="text-slate-400 leading-[1.6] m-0" data-es="Accesibilidad, rendimiento y responsive check. El producto funciona en cualquier dispositivo y para cualquier usuario." data-en="Accessibility, performance and responsive check. The product works on any device and for any user.">Accesibilidad, rendimiento y responsive check. El producto funciona en cualquier dispositivo y para cualquier usuario.</p>
+            </div>
+        </div>
+    </div>
+</section>
