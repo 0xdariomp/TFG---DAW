@@ -555,13 +555,13 @@ class NavIndicator {
 
   updateIndicator() {
     if (!this.indicator) return;
-    
+
     const activeLink = Array.from(this.navLinks).find((link) => {
       const href = link.getAttribute("href");
-      if (!href || !href.includes('#')) return false;
-      
-      const hash = href.substring(href.indexOf('#'));
-      if (hash === '#') return false;
+      if (!href || !href.includes("#")) return false;
+
+      const hash = href.substring(href.indexOf("#"));
+      if (hash === "#") return false;
 
       try {
         const section = document.querySelector(hash);
@@ -574,11 +574,11 @@ class NavIndicator {
     });
 
     if (activeLink) {
-      this.indicator.style.opacity = '1';
+      this.indicator.style.opacity = "1";
       this.indicator.style.left = activeLink.offsetLeft + "px";
       this.indicator.style.width = activeLink.offsetWidth + "px";
     } else {
-      this.indicator.style.opacity = '0';
+      this.indicator.style.opacity = "0";
     }
   }
 }
@@ -937,23 +937,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     scrollTopBtn.addEventListener("click", () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  }
-
-  // Hobbies toggle
-  const hobbiesBtn = document.getElementById("hobbies-toggle-btn");
-  const hobbiesSection = document.getElementById("hobbies-section");
-  if (hobbiesBtn && hobbiesSection) {
-    hobbiesBtn.addEventListener("click", () => {
-      const isOpen = hobbiesSection.classList.toggle("open");
-      hobbiesBtn.classList.toggle("open", isOpen);
-      hobbiesBtn.querySelector(".toggle-text").textContent = isOpen
-        ? localStorage.getItem("language") === "en"
-          ? "Hide personal info ↑"
-          : "Ocultar ↑"
-        : localStorage.getItem("language") === "en"
-          ? "Want to know me better?"
-          : "¿Quieres conocerme mejor?";
     });
   }
 

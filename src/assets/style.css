@@ -732,7 +732,10 @@ p {
 .carousel-container {
   position: relative;
   overflow: visible;
-  margin-top: 50px;
+  margin-top: 10px;
+  margin-bottom: -40px;
+  padding-top: 40px;
+  padding-bottom: 40px;
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0,
@@ -754,6 +757,7 @@ p {
   gap: 30px;
   animation: scroll 30s linear infinite;
   will-change: transform;
+  overflow-y: visible;
 }
 
 .carousel-item {
