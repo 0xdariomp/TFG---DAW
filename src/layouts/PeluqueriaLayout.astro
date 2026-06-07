@@ -533,8 +533,11 @@
 
 
 
-<script is:inline>
-    const BOOKING_KEY = 'vipgranada_booking_v1';
+<script>
+    import { supabase } from '../lib/supabase.js';
+
+    const BOOKING_KEY = 'vipgranada_cita_id';
+    const SVC_DUR = { 'Corte de Pelo': 30, 'Corte + Barba': 45, 'Corte + Barba + Cejas': 55 };
     const bk = { svc: null, price: null, dur: null, date: null, dateObj: null, time: null };
     let calYear, calMonth;
 
@@ -544,31 +547,46 @@
     });
 
     // ---- ACTIVE BOOKING BANNER ----
-    function renderBanner() {
-        const raw = localStorage.getItem(BOOKING_KEY);
+    async function renderBanner() {
         const banner = document.getElementById('active-banner');
+        if (!banner) return;
         banner.innerHTML = '';
-        if (!raw) return;
-        try {
-            const b = JSON.parse(raw);
-            banner.innerHTML = `
-                <div class="active-booking-banner">
-                    <div class="abn-info">
-                        <span class="abn-icon">📅</span>
-                        <div class="abn-text">
-                            <strong>Cita activa: ${b.svc}</strong>
-                            <p>${b.date} · ${b.time} · ${b.name}</p>
-                        </div>
+        const citaId = localStorage.getItem(BOOKING_KEY);
+        if (!citaId) return;
+
+        const { data: cita, error } = await supabase
+            .from('citas')
+            .select('id, servicio, fecha, hora, nombre, estado')
+            .eq('id', citaId)
+            .single();
+
+        if (error) return; // fallo de red — no borrar localStorage
+        if (!cita || cita.estado !== 'confirmada') {
+            localStorage.removeItem(BOOKING_KEY);
+            return;
+        }
+
+        const fechaDisplay = new Date(cita.fecha + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+
+        banner.innerHTML = `
+            <div class="active-booking-banner">
+                <div class="abn-info">
+                    <span class="abn-icon">📅</span>
+                    <div class="abn-text">
+                        <strong>Cita activa: ${cita.servicio}</strong>
+                        <p>${fechaDisplay} · ${cita.hora.substring(0, 5)} · ${cita.nombre}</p>
                     </div>
-                    <button class="btn-cancel-booking" id="btn-cancel">Cancelar cita</button>
-                </div>`;
-            document.getElementById('btn-cancel').addEventListener('click', () => {
-                if (confirm('¿Seguro que quieres cancelar tu cita?')) {
-                    localStorage.removeItem(BOOKING_KEY);
-                    renderBanner();
-                }
-            });
-        } catch(e) { localStorage.removeItem(BOOKING_KEY); }
+                </div>
+                <button class="btn-cancel-booking" id="btn-cancel">Cancelar cita</button>
+            </div>`;
+
+        document.getElementById('btn-cancel').addEventListener('click', async () => {
+            if (confirm('¿Seguro que quieres cancelar tu cita?')) {
+                await supabase.from('citas').update({ estado: 'cancelada' }).eq('id', citaId);
+                localStorage.removeItem(BOOKING_KEY);
+                await renderBanner();
+            }
+        });
     }
 
     // ---- STEP NAVIGATION ----
@@ -659,8 +677,6 @@
         calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCal();
     });
 
-    const TAKEN = ['10:00','11:30','16:00','17:30'];
-
     let toastTimer = null;
     function showToast(msg) {
         if (toastTimer) clearTimeout(toastTimer);
@@ -679,18 +695,52 @@
         }, 3200);
     }
 
-    function renderTimeSlots(dow) {
+    async function renderTimeSlots(dow) {
         const grid = document.getElementById('time-grid');
+        grid.innerHTML = '<div style="color:var(--text-muted);font-size:.8rem;padding:10px;grid-column:span 4">Cargando disponibilidad...</div>';
+
+        const y = bk.dateObj.getFullYear();
+        const m = String(bk.dateObj.getMonth() + 1).padStart(2, '0');
+        const d = String(bk.dateObj.getDate()).padStart(2, '0');
+        const fechaStr = `${y}-${m}-${d}`;
+
+        const { data: bookings } = await supabase
+            .from('citas')
+            .select('hora, duracion')
+            .eq('fecha', fechaStr)
+            .eq('estado', 'confirmada');
+
+        const blockedMins = new Set();
+        (bookings || []).forEach(b => {
+            const [h, min] = b.hora.split(':').map(Number);
+            const startMin = h * 60 + min;
+            for (let t = startMin; t < startMin + (b.duracion || 30); t += 30) {
+                blockedMins.add(t);
+            }
+        });
+
         grid.innerHTML = '';
         const isSat = dow === 6;
         const slots = ['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30',
                        '13:00','13:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00'];
         const filtered = isSat ? slots.filter(s => s < '17:00') : slots;
+
+        const dur = SVC_DUR[bk.svc] || 30;
+        const slotsNeeded = Math.ceil(dur / 30);
+
         filtered.forEach(t => {
+            const [h, min] = t.split(':').map(Number);
+            const startMin = h * 60 + min;
+
+            let isTaken = false;
+            for (let i = 0; i < slotsNeeded; i++) {
+                if (blockedMins.has(startMin + i * 30)) { isTaken = true; break; }
+            }
+
             const btn = document.createElement('button');
-            btn.className = 'time-btn' + (TAKEN.includes(t) ? ' taken' : '');
+            btn.className = 'time-btn' + (isTaken ? ' taken' : '');
             btn.textContent = t;
-            if (!TAKEN.includes(t)) {
+            if (!isTaken) {
                 btn.addEventListener('click', () => {
                     document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
                     btn.classList.add('selected');
@@ -716,17 +766,38 @@
     });
     document.getElementById('back2').addEventListener('click', () => goStep(2));
 
-    document.getElementById('confirm').addEventListener('click', () => {
-        const name = document.getElementById('f-name').value.trim();
-        const phone = document.getElementById('f-phone').value.trim();
-        document.getElementById('f-name').style.borderColor = name ? '' : '#ef4444';
-        document.getElementById('f-phone').style.borderColor = phone ? '' : '#ef4444';
-        if (!name || !phone) return;
+    async function createBooking(name, surname, phone, notes, btn) {
+        const { data: cliente } = await supabase
+            .from('clientes')
+            .upsert({ nombre: name, apellido: surname || '', telefono: phone }, { onConflict: 'telefono' })
+            .select('id')
+            .single();
 
-        localStorage.setItem(BOOKING_KEY, JSON.stringify({
-            svc: bk.svc, price: bk.price, date: bk.date, time: bk.time,
-            name: name, phone: phone, ts: Date.now()
-        }));
+        const y = bk.dateObj.getFullYear();
+        const m = String(bk.dateObj.getMonth() + 1).padStart(2, '0');
+        const d = String(bk.dateObj.getDate()).padStart(2, '0');
+
+        const { data: cita, error } = await supabase
+            .from('citas')
+            .insert({
+                cliente_id: cliente?.id || null,
+                telefono: phone,
+                nombre: name,
+                apellido: surname || '',
+                servicio: bk.svc,
+                precio: bk.price,
+                duracion: SVC_DUR[bk.svc] || 30,
+                fecha: `${y}-${m}-${d}`,
+                hora: bk.time,
+                notas: notes || null,
+                estado: 'confirmada'
+            })
+            .select('id')
+            .single();
+
+        if (error) throw error;
+
+        localStorage.setItem(BOOKING_KEY, cita.id);
 
         document.getElementById('confirm-msg').textContent =
             `Hola ${name}, tu cita de "${bk.svc}" el ${bk.date} a las ${bk.time} está confirmada. Cualquier duda llámanos al 674 66 47 48.`;
@@ -735,6 +806,69 @@
         document.querySelectorAll('.fstep:not(#s-ok)').forEach(s => s.classList.remove('active'));
         updateDots(4);
         renderBanner();
+
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check"></i> Confirmar';
+    }
+
+    document.getElementById('confirm').addEventListener('click', async () => {
+        const name    = document.getElementById('f-name').value.trim();
+        const surname = document.getElementById('f-surname').value.trim();
+        const phone   = document.getElementById('f-phone').value.trim();
+        const notes   = document.getElementById('f-notes').value.trim();
+
+        document.getElementById('f-name').style.borderColor  = name  ? '' : '#ef4444';
+        document.getElementById('f-phone').style.borderColor = phone ? '' : '#ef4444';
+        if (!name || !phone) return;
+
+        const btn = document.getElementById('confirm');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
+
+        try {
+            const { data: existing } = await supabase
+                .from('citas')
+                .select('id, servicio, fecha, hora')
+                .eq('telefono', phone)
+                .eq('estado', 'confirmada')
+                .limit(1);
+
+            if (existing && existing.length > 0) {
+                const prev = existing[0];
+                const fechaDisplay = new Date(prev.fecha + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+                const banner = document.getElementById('active-banner');
+                banner.innerHTML = `
+                    <div class="active-booking-banner">
+                        <div class="abn-info">
+                            <span class="abn-icon">⚠️</span>
+                            <div class="abn-text">
+                                <strong>Ya tienes una cita activa</strong>
+                                <p>${prev.servicio} · ${fechaDisplay} · ${prev.hora.substring(0, 5)}</p>
+                            </div>
+                        </div>
+                        <button class="btn-cancel-booking" id="btn-cancel-prev">Cancelar y reservar nueva</button>
+                    </div>`;
+
+                document.getElementById('btn-cancel-prev').addEventListener('click', async () => {
+                    banner.innerHTML = '';
+                    await supabase.from('citas').update({ estado: 'cancelada' }).eq('id', prev.id);
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
+                    await createBooking(name, surname, phone, notes, btn);
+                });
+
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-check"></i> Confirmar';
+                return;
+            }
+
+            await createBooking(name, surname, phone, notes, btn);
+        } catch (err) {
+            console.error('Error al reservar:', err);
+            showToast('Error al procesar la reserva. Inténtalo de nuevo.');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-check"></i> Confirmar';
+        }
     });
 
     document.getElementById('new-booking').addEventListener('click', () => {
@@ -745,11 +879,15 @@
     });
 
     // Init
-    document.addEventListener('DOMContentLoaded', () => {
+    function init() {
         renderBanner();
         buildCalendar();
-    });
-    if (document.readyState !== 'loading') { renderBanner(); buildCalendar(); }
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
 
     // ---- ACCESSIBILITY WIDGET ----
     (function() {

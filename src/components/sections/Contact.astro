@@ -87,3 +87,19 @@
         </div>
     </div>
 </section>
+
+<script>
+    import { supabase } from '../../lib/supabase.js';
+
+    const form = document.querySelector('.contact-form');
+    form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const nombre  = document.getElementById('contact-name').value.trim();
+        const email   = document.getElementById('contact-email').value.trim();
+        const asunto  = document.getElementById('contact-subject').value.trim();
+        const mensaje = document.getElementById('contact-message').value.trim();
+
+        await supabase.from('contactos').insert({ nombre, email, asunto, mensaje });
+        form.submit();
+    });
+</script>
