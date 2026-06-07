@@ -1,0 +1,50 @@
+---
+// Accessibility.astro
+---
+<!-- ACCESSIBILITY WIDGET -->
+<div class="a11y-widget">
+    <button class="a11y-fab" id="a11y-fab" aria-label="Opciones de accesibilidad">
+        <i class="fas fa-universal-access"></i> Accesibilidad
+    </button>
+    <div class="a11y-panel" id="a11y-panel">
+        <div class="a11y-ph">
+            Ajustes visuales
+            <button class="a11y-xbtn" id="a11y-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="a11y-row-item">
+            <span class="a11y-row-lbl">Tamaño texto</span>
+            <div class="a11y-chips">
+                <button class="a11y-chip" data-t="font" data-v="14">A-</button>
+                <button class="a11y-chip on" data-t="font" data-v="16">A</button>
+                <button class="a11y-chip" data-t="font" data-v="18">A+</button>
+                <button class="a11y-chip" data-t="font" data-v="21">A++</button>
+            </div>
+        </div>
+        <div class="a11y-row-item">
+            <span class="a11y-row-lbl">Contraste</span>
+            <div class="a11y-chips">
+                <button class="a11y-chip on" data-t="contrast" data-v="normal">Normal</button>
+                <button class="a11y-chip" data-t="contrast" data-v="high">Alto</button>
+                <button class="a11y-chip" data-t="contrast" data-v="inverted">Invertir</button>
+            </div>
+        </div>
+        <div class="a11y-row-item">
+            <span class="a11y-row-lbl">Color</span>
+            <div class="a11y-chips">
+                <button class="a11y-chip on" data-t="color" data-v="normal">Normal</button>
+                <button class="a11y-chip" data-t="color" data-v="deuteranopia">Deut.</button>
+                <button class="a11y-chip" data-t="color" data-v="protanopia">Prot.</button>
+                <button class="a11y-chip" data-t="color" data-v="grayscale">Grises</button>
+            </div>
+        </div>
+        <div class="a11y-row-item">
+            <span class="a11y-row-lbl">Movimiento</span>
+            <div class="a11y-chips">
+                <button class="a11y-chip on" data-t="motion" data-v="normal">Normal</button>
+                <button class="a11y-chip" data-t="motion" data-v="reduced">Reducir</button>
+                <button class="a11y-chip" data-t="motion" data-v="off">Ninguno</button>
+            </div>
+        </div>
+        <button class="a11y-rbtn" id="a11y-reset">↺ Restablecer</button>
+    </div>
+</div>

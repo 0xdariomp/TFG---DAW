@@ -1,0 +1,107 @@
+---
+// Booking.astro
+---
+<!-- RESERVAR CITA -->
+<section class="section-std" id="reservar">
+    <div class="slabel">Online · 24/7</div>
+    <h2 class="stitle">Reservar Cita</h2>
+    <p class="ssub">Elige tu servicio, fecha y hora. Si ya tienes una cita, podrás cancelarla antes de reservar una nueva.</p>
+
+    <div class="booking-layout">
+        <div class="booking-side">
+            <p>Sin esperas, sin llamadas. Reserva en 2 minutos y recibe confirmación inmediata.</p>
+            <div class="bsteps">
+                <div class="bstep"><div class="bdot done" id="d1">1</div><div class="bstep-info"><h5>Servicio</h5><p>Elige qué quieres hacerte</p></div></div>
+                <div class="bstep"><div class="bdot" id="d2">2</div><div class="bstep-info"><h5>Fecha y Hora</h5><p>Cuándo quieres venir</p></div></div>
+                <div class="bstep"><div class="bdot" id="d3">3</div><div class="bstep-info"><h5>Tus Datos</h5><p>Nombre y teléfono</p></div></div>
+            </div>
+        </div>
+
+        <div>
+            <!-- Banner de reserva activa (se inyecta con JS) -->
+            <div id="active-banner"></div>
+
+            <div class="form-card">
+                <!-- PASO 1: Servicio -->
+                <div class="fstep active" id="s1">
+                    <div class="fstep-header">
+                        <span class="fstep-title">¿Qué servicio?</span>
+                        <span class="fstep-step">Paso 1 / 3</span>
+                    </div>
+                    <div class="svc-pick-grid">
+                        <button class="svc-pick-btn" data-svc="Corte de Pelo" data-price="11€" data-dur="30 min">
+                            <span class="spb-name">Corte de Pelo</span>
+                            <span class="spb-right"><span class="spb-price">11€</span><span class="spb-dur">30 min</span></span>
+                        </button>
+                        <button class="svc-pick-btn" data-svc="Corte + Barba" data-price="16€" data-dur="45 min">
+                            <span class="spb-name">Corte + Barba</span>
+                            <span class="spb-right"><span class="spb-price">16€</span><span class="spb-dur">45 min</span></span>
+                        </button>
+                        <button class="svc-pick-btn" data-svc="Corte + Barba + Cejas" data-price="20€" data-dur="55 min">
+                            <span class="spb-name">Corte + Barba + Cejas</span>
+                            <span class="spb-right"><span class="spb-price">20€</span><span class="spb-dur">55 min</span></span>
+                        </button>
+                    </div>
+                    <div class="fnav">
+                        <button class="btn-next" id="to2" disabled>Continuar <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- PASO 2: Fecha & Hora -->
+                <div class="fstep" id="s2">
+                    <div class="fstep-header">
+                        <span class="fstep-title">Elige fecha y hora</span>
+                        <span class="fstep-step">Paso 2 / 3</span>
+                    </div>
+                    <div class="cal-month">
+                        <button class="cal-nav" id="cal-prev"><i class="fas fa-chevron-left"></i></button>
+                        <span class="cal-month-name" id="cal-title"></span>
+                        <button class="cal-nav" id="cal-next"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="cal-grid" id="cal-grid"></div>
+                    <div class="time-label">Hora disponible</div>
+                    <div class="time-grid" id="time-grid"></div>
+                    <div class="fnav">
+                        <button class="btn-back" id="back1">Atrás</button>
+                        <button class="btn-next" id="to3" disabled>Continuar <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- PASO 3: Datos -->
+                <div class="fstep" id="s3">
+                    <div class="fstep-header">
+                        <span class="fstep-title">Tus datos</span>
+                        <span class="fstep-step">Paso 3 / 3</span>
+                    </div>
+                    <div class="summary-box">
+                        <h5>◆ Resumen</h5>
+                        <div class="sum-row"><span class="sum-lbl">Servicio</span><span class="sum-val" id="sv-svc">—</span></div>
+                        <div class="sum-row"><span class="sum-lbl">Fecha</span><span class="sum-val" id="sv-date">—</span></div>
+                        <div class="sum-row"><span class="sum-lbl">Hora</span><span class="sum-val" id="sv-time">—</span></div>
+                        <div class="sum-row"><span class="sum-lbl">Precio</span><span class="sum-val gold" id="sv-price">—</span></div>
+                    </div>
+                    <div class="frow">
+                        <div class="fgroup"><label>Nombre</label><input type="text" id="f-name" placeholder="Tu nombre" autocomplete="given-name"></div>
+                        <div class="fgroup"><label>Apellido</label><input type="text" id="f-surname" placeholder="Apellido" autocomplete="family-name"></div>
+                    </div>
+                    <div class="fgroup"><label>Teléfono</label><input type="tel" id="f-phone" placeholder="6XX XXX XXX" autocomplete="tel"></div>
+                    <div class="fgroup"><label>Notas (opcional)</label><input type="text" id="f-notes" placeholder="Estilo, preferencias..."></div>
+                    <div class="fnav">
+                        <button class="btn-back" id="back2">Atrás</button>
+                        <button class="btn-next" id="confirm"><i class="fas fa-check"></i> Confirmar</button>
+                    </div>
+                </div>
+
+                <!-- CONFIRMACIÓN -->
+                <div class="fstep" id="s-ok">
+                    <div class="confirm-screen">
+                        <div class="confirm-icon"><i class="fas fa-check"></i></div>
+                        <h3>¡Reserva Confirmada!</h3>
+                        <p id="confirm-msg">Tu cita está registrada.</p>
+                        <button class="btn-gold" id="new-booking" style="margin:0 auto;display:inline-flex;"><i class="fas fa-plus"></i> Nueva Reserva</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
