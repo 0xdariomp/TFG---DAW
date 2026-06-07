@@ -533,6 +533,7 @@ class NavIndicator {
   constructor() {
     this.indicator = document.querySelector(".nav-indicator");
     this.navLinks = document.querySelectorAll(".nav-links a");
+    if (!this.indicator) return;
     this.updateIndicator();
 
     this.navLinks.forEach((link) => {
@@ -553,18 +554,31 @@ class NavIndicator {
   }
 
   updateIndicator() {
+    if (!this.indicator) return;
+    
     const activeLink = Array.from(this.navLinks).find((link) => {
       const href = link.getAttribute("href");
-      const section = document.querySelector(href);
-      if (!section) return false;
-      const rect = section.getBoundingClientRect();
-      return rect.top < 100 && rect.bottom > 100;
+      if (!href || !href.includes('#')) return false;
+      
+      const hash = href.substring(href.indexOf('#'));
+      if (hash === '#') return false;
+
+      try {
+        const section = document.querySelector(hash);
+        if (!section) return false;
+        const rect = section.getBoundingClientRect();
+        return rect.top < 100 && rect.bottom > 100;
+      } catch (e) {
+        return false;
+      }
     });
 
     if (activeLink) {
-      const rect = activeLink.getBoundingClientRect();
+      this.indicator.style.opacity = '1';
       this.indicator.style.left = activeLink.offsetLeft + "px";
       this.indicator.style.width = activeLink.offsetWidth + "px";
+    } else {
+      this.indicator.style.opacity = '0';
     }
   }
 }
